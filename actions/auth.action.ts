@@ -77,9 +77,10 @@ export const register = async (values: RegisterMemberType) => {
     .select()
     .single();
   if (error) {
+    console.log('Error:', error.message);
     return { error: error.message };
   }
-  await resend.emails.send({
+  const { error: emailError } = await resend.emails.send({
     from: '<onboarding@resend.dev>',
     to: [data?.email],
     subject: 'Verify your email',
@@ -89,6 +90,9 @@ export const register = async (values: RegisterMemberType) => {
       verificationLink: `${api}/confirm-email?id=${data?.user_id}`,
     }),
   });
+  if (emailError) {
+    console.log('Error:', emailError);
+  }
   redirect('/sign-in');
 };
 

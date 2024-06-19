@@ -55,7 +55,9 @@ export const RegisterForm = ({}: Props): JSX.Element => {
     },
     resolver: zodResolver(registerSchema),
   });
-  const { img_url } = watch();
+  const { img_url, dateOfBirth } = watch();
+  console.log(dateOfBirth);
+
   const onOpenPicker = () => {
     if (!inputRef.current) return;
     inputRef.current.click();
@@ -268,8 +270,6 @@ export const RegisterForm = ({}: Props): JSX.Element => {
               name={'password'}
               placeholder="Enter a password"
             />
-          </Box>
-          <Box display={'flex'} flexDir={'column'} gap={5} mt={5}>
             <ValidateInput
               label="Confirm password"
               control={control}
@@ -277,6 +277,8 @@ export const RegisterForm = ({}: Props): JSX.Element => {
               name={'confirmPassword'}
               placeholder="Confirm your password"
             />
+          </Box>
+          <Box display={'flex'} flexDir={'column'} gap={5} mt={5}>
             <ValidateInput
               label="Phone number"
               control={control}
