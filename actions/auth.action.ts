@@ -1,13 +1,17 @@
 'use server';
 
 import VerifyEmail from '@/emails/Verify';
-import { hashPasswordBcrypt, verifyPasswordBcrypt } from '@/lib/helper';
+import {
+  generateRandomString,
+  hashPasswordBcrypt,
+  verifyPasswordBcrypt,
+} from '@/lib/helper';
 import { MemberType, RegisterMemberType } from '@/types';
 import { supabase } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { Resend } from 'resend';
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend(process.env.RESEND_KEY);
 const api = process.env.BASE_URL;
 export const login = async ({
   email,
@@ -45,9 +49,31 @@ export const login = async ({
 export const register = async (values: RegisterMemberType) => {
   const hashedPassword = await hashPasswordBcrypt(values.password);
   if (!hashedPassword) return { error: 'Failed to create profile' };
+
+  let userId = '';
+  let isUsed = false;
+
+  do {
+    const id = generateRandomString();
+    const { data: dt, error } = await supabase
+      .from('users')
+      .select()
+      .eq('userId', id);
+
+    if (error) {
+      console.log('Error:', error);
+      return { error: 'Failed to create profile' };
+    }
+    if (dt?.length > 0) {
+      isUsed = true;
+    } else if (dt?.length === 0) {
+      isUsed = false;
+      userId = id;
+    }
+  } while (isUsed);
   const { error, data } = await supabase
     .from('users')
-    .insert({ ...values, password: hashedPassword })
+    .insert({ ...values, password: hashedPassword, userId })
     .select()
     .single();
   if (error) {
@@ -68,6 +94,18 @@ export const register = async (values: RegisterMemberType) => {
 
 export const getCookies = async () => {
   return cookies().get('id')?.value;
+};
+
+export const getProfile = async (id: string) => {
+  const { data, error } = await supabase
+    .from('users')
+    .select()
+    .eq('user_id', id)
+    .single();
+  if (error) {
+    throw new Error('Failed to get profile data');
+  }
+  return data;
 };
 
 export const logOut = async () => {

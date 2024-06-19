@@ -71,6 +71,8 @@ export const RegisterForm = ({}: Props): JSX.Element => {
         salutation: data.salutation,
         img_url: data.img_url || '',
         title: data.title || '',
+        dateOfBirth: data.dateOfBirth || '',
+        gender: data.gender || '',
       });
 
       if (res.error) {
@@ -294,18 +296,27 @@ export const RegisterForm = ({}: Props): JSX.Element => {
               control={control}
               errors={errors}
               type="select"
-              data={['Mr', 'Mrs']}
+              data={['Mr', 'Mrs', 'Miss']}
               name={'salutation'}
               placeholder="Select a salutation"
             />
-            {/* <ValidateInput
+            <ValidateInput
+              label="Gender"
+              control={control}
+              errors={errors}
+              type="select"
+              data={['Male', 'Female']}
+              name={'gender'}
+              placeholder="Select a Gender"
+            />
+            <ValidateInput
               label="Date of birth"
               control={control}
               errors={errors}
               type={'date'}
               name={'dateOfBirth'}
               placeholder="Select a date"
-            /> */}
+            />
           </Box>
         </SimpleGrid>
         <Flex width={'100%'} justifyContent={'center'}>

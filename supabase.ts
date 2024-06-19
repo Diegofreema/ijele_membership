@@ -344,11 +344,42 @@ export type Database = {
         };
         Relationships: [];
       };
+      regular: {
+        Row: {
+          created_at: string;
+          id: number;
+          type: string | null;
+          userId: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          id: number;
+          type?: string | null;
+          userId?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          type?: string | null;
+          userId?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'regular_userId_fkey';
+            columns: ['userId'];
+            isOneToOne: false;
+            referencedRelation: 'users';
+            referencedColumns: ['user_id'];
+          }
+        ];
+      };
       users: {
         Row: {
           created_at: string;
+          dateOfBirth: string | null;
           email: string;
           first_name: string;
+          gender: string;
           id: number;
           img_url: string | null;
           last_name: string;
@@ -358,12 +389,15 @@ export type Database = {
           title: string | null;
           type: Database['public']['Enums']['memberType'] | null;
           user_id: string;
+          userId: string;
           verified: boolean | null;
         };
         Insert: {
           created_at?: string;
+          dateOfBirth?: string | null;
           email?: string;
           first_name?: string;
+          gender?: string;
           id?: number;
           img_url?: string | null;
           last_name?: string;
@@ -373,12 +407,15 @@ export type Database = {
           title?: string | null;
           type?: Database['public']['Enums']['memberType'] | null;
           user_id?: string;
+          userId?: string;
           verified?: boolean | null;
         };
         Update: {
           created_at?: string;
+          dateOfBirth?: string | null;
           email?: string;
           first_name?: string;
+          gender?: string;
           id?: number;
           img_url?: string | null;
           last_name?: string;
@@ -388,6 +425,7 @@ export type Database = {
           title?: string | null;
           type?: Database['public']['Enums']['memberType'] | null;
           user_id?: string;
+          userId?: string;
           verified?: boolean | null;
         };
         Relationships: [];

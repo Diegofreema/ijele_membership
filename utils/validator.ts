@@ -54,11 +54,12 @@ export const registerSchema = z
     // country: z.string().min(1, { message: 'Please select a country' }),
     // state: z.string().min(1, { message: 'Please select a state of origin' }),
     // address: z.string().min(1, { message: 'Please enter your address' }),
-    // dateOfBirth: z
-    //   .string()
-    //   .min(1, { message: 'Please enter your date of birth' }),
+    dateOfBirth: z
+      .string()
+      .min(1, { message: 'Please enter your date of birth' }),
     title: z.string().optional(),
     salutation: z.string(),
+    gender: z.string().min(1, { message: 'Please select your gender' }),
     img_url: z.string().min(1, { message: 'Please select an image' }),
   })
   .refine((data) => data.password === data.confirmPassword, {
