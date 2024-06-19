@@ -15,12 +15,10 @@ import { Link } from 'next-view-transitions';
 import { Moon, Sun, MenuIcon } from 'lucide-react';
 // import { MobileDrawer } from './MobileNav';
 import { motion } from 'framer-motion';
-import { usePathname, useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import { colors } from '@/constant';
 import { CustomButton } from './form/CustomButton';
-import { useEffect, useState } from 'react';
-import { getCookies, logOut } from '@/actions/auth.action';
-import { log } from 'util';
+import { logOut } from '@/actions/auth.action';
 
 interface Props {
   id: string | undefined;

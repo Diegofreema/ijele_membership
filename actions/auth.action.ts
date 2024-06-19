@@ -42,7 +42,7 @@ export const login = async ({
   if (!data.verified) {
     return { error: 'not verified' };
   }
-  cookies().set('id', data.user_id);
+  cookies().set('id', data.user_id, { secure: true });
   redirect('/profile');
 };
 
