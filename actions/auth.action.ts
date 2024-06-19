@@ -7,7 +7,7 @@ import {
   verifyPasswordBcrypt,
 } from '@/lib/helper';
 import { MemberType, RegisterMemberType } from '@/types';
-import { supabase } from '@/utils/supabase/server';
+import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { Resend } from 'resend';
@@ -20,6 +20,7 @@ export const login = async ({
   email: string;
   password: string;
 }) => {
+  const supabase = createClient();
   //   const hashPassword = await verifyPasswordBcrypt(password);
   //   if (!hashPassword) return { message: 'failed to create profile' };
   const { error, data } = await supabase
@@ -47,6 +48,7 @@ export const login = async ({
 };
 
 export const register = async (values: RegisterMemberType) => {
+  const supabase = createClient();
   const hashedPassword = await hashPasswordBcrypt(values.password);
   if (!hashedPassword) return { error: 'Failed to create profile' };
 
@@ -101,6 +103,7 @@ export const getCookies = async () => {
 };
 
 export const getProfile = async (id: string) => {
+  const supabase = createClient();
   const { data, error } = await supabase
     .from('users')
     .select()
@@ -115,4 +118,19 @@ export const getProfile = async (id: string) => {
 export const logOut = async () => {
   cookies().delete('id');
   redirect('/');
+};
+
+export const verifyEmail = async (id: string) => {
+  const supabase = createClient();
+  const { error } = await supabase
+    .from('users')
+    .update({
+      verified: true,
+    })
+    .eq('user_id', id);
+  if (error) {
+    return { message: 'Failed to verify email' };
+  }
+
+  return { message: 'Email verified' };
 };

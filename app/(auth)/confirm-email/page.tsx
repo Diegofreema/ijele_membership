@@ -1,38 +1,17 @@
-import { supabase } from '@/utils/supabase/server';
+import { verifyEmail } from '@/actions/auth.action';
 import { redirect } from 'next/navigation';
-import React from 'react';
-
-type Props = {};
 
 const page = async ({ searchParams }: { searchParams: { id: string } }) => {
-  let loading = true;
-  let errorVerifying = false;
-  const { error } = await supabase
-    .from('users')
-    .update({
-      verified: true,
-    })
-    .eq('user_id', searchParams.id);
-
-  loading = false;
+  const { message } = await verifyEmail(searchParams.id);
   let text = '';
-  if (error) {
-    errorVerifying = true;
+  if (message === 'Failed to verify email') {
+    text = 'Failed to verify email, please try again';
   }
 
-  if (loading) {
-    text = 'Verifying...';
+  if (message === 'Email verified') {
+    text = 'Email verified successfully';
+    redirect('/sign-in');
   }
-
-  if (errorVerifying) {
-    text = 'Error verifying your email please try again';
-  }
-
-  if (!loading && !errorVerifying) {
-    text = 'Your email has already been verified, please login in';
-    return redirect('/sign-in');
-  }
-
   return (
     <div className="flex h-screen justify-center items-center space-y-3">
       <h1 className="text-black text-center">Verify your email.</h1>
