@@ -85,34 +85,31 @@ export const SingleMember = ({ user }: { user: MemberType }) => {
     () => packages.find((p) => p.type === memberships),
     [memberships]
   );
-  const onSuccess = useCallback(
-    async (reference: string) => {
+  const onSuccess = useCallback(async () => {
+    toast({
+      title: 'Processing',
+      description: `Please be patient...`,
+      status: 'loading',
+      position: 'top-right',
+    });
+    const { message } = await onSub(user.user_id, singleMember?.type as any);
+    if (message === 'Failed to complete registration') {
       toast({
-        title: 'Processing',
-        description: `Please be patient...`,
-        status: 'loading',
+        title: 'Error',
+        description: `Failed to complete registration process`,
+        status: 'error',
         position: 'top-right',
       });
-      const { message } = await onSub(user.user_id, singleMember?.type as any);
-      if (message === 'Failed to complete registration') {
-        toast({
-          title: 'Error',
-          description: `Failed to complete registration process`,
-          status: 'error',
-          position: 'top-right',
-        });
-      }
-      if (message === 'success') {
-        toast({
-          title: 'Welcome to the family',
-          description: `You are not part of the Ijele SC`,
-          status: 'success',
-          position: 'top-right',
-        });
-      }
-    },
-    [toast, singleMember?.type, user.user_id]
-  );
+    }
+    if (message === 'success') {
+      toast({
+        title: 'Welcome to the family',
+        description: `You are not part of the Ijele SC`,
+        status: 'success',
+        position: 'top-right',
+      });
+    }
+  }, [toast, singleMember?.type, user.user_id]);
 
   const onClose = useCallback(() => {
     toast({
@@ -131,8 +128,8 @@ export const SingleMember = ({ user }: { user: MemberType }) => {
     },
     publicKey: 'pk_test_52f4b5b31fa901229f5d3e2a1641d7477aacf092',
     text: 'Register',
-    onSuccess: onSuccess,
-    onClose: onClose,
+    onSuccess: () => onSuccess(),
+    onClose: () => onClose(),
   };
   const config = {
     reference: new Date().getTime().toString(),
