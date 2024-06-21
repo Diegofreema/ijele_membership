@@ -15,6 +15,10 @@ type Props = {
 };
 
 export const AllMembers = ({ members }: Props): JSX.Element => {
+  const regular = useMemo(
+    () => members?.filter((m) => m.type === 'regular'),
+    [members]
+  );
   const president = useMemo(
     () => members?.filter((m) => m.type === 'honorary-president'),
     [members]
@@ -61,17 +65,20 @@ export const AllMembers = ({ members }: Props): JSX.Element => {
         )}
         {members?.length > 0 && (
           <Box display={'flex'} flexDir={'column'} gap={10}>
-            {annual.length > 0 && (
-              <MembersPart members={annual} title="Annual Membership" />
-            )}
-            {life.length > 0 && (
-              <MembersPart members={life} title="Life Membership" />
+            {president.length > 0 && (
+              <MembersPart members={president} title="Honorary President" />
             )}
             {board.length > 0 && (
               <MembersPart members={board} title="Honorary Board Membership" />
             )}
-            {president.length > 0 && (
-              <MembersPart members={president} title="Honorary President" />
+            {life.length > 0 && (
+              <MembersPart members={life} title="Life Membership" />
+            )}
+            {annual.length > 0 && (
+              <MembersPart members={annual} title="Annual Membership" />
+            )}
+            {regular.length > 0 && (
+              <MembersPart members={regular} title="Regular Membership" />
             )}
           </Box>
         )}
@@ -82,7 +89,7 @@ export const AllMembers = ({ members }: Props): JSX.Element => {
 
 const MembersPart = ({ members, title }: Props & { title: string }) => {
   return (
-    <Box gap={{ base: 5 }}>
+    <Box display={'flex'} flexDir={'column'} gap={{ base: 5 }} mb={7}>
       <CustomHeading textColor={'black'} text={title} />
       <SimpleGrid columns={{ base: 1, md: 4 }}>
         {members.map((member, index) => (

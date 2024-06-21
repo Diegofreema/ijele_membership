@@ -377,6 +377,7 @@ export type Database = {
         Row: {
           created_at: string;
           dateOfBirth: string | null;
+          duration: string | null;
           email: string;
           first_name: string;
           gender: string;
@@ -385,6 +386,7 @@ export type Database = {
           last_name: string;
           middle_name: string | null;
           password: string;
+          phoneNumber: string | null;
           salutation: string | null;
           title: string | null;
           type: Database['public']['Enums']['memberType'] | null;
@@ -395,6 +397,7 @@ export type Database = {
         Insert: {
           created_at?: string;
           dateOfBirth?: string | null;
+          duration?: string | null;
           email?: string;
           first_name?: string;
           gender?: string;
@@ -403,6 +406,7 @@ export type Database = {
           last_name?: string;
           middle_name?: string | null;
           password?: string;
+          phoneNumber?: string | null;
           salutation?: string | null;
           title?: string | null;
           type?: Database['public']['Enums']['memberType'] | null;
@@ -413,6 +417,7 @@ export type Database = {
         Update: {
           created_at?: string;
           dateOfBirth?: string | null;
+          duration?: string | null;
           email?: string;
           first_name?: string;
           gender?: string;
@@ -421,6 +426,7 @@ export type Database = {
           last_name?: string;
           middle_name?: string | null;
           password?: string;
+          phoneNumber?: string | null;
           salutation?: string | null;
           title?: string | null;
           type?: Database['public']['Enums']['memberType'] | null;

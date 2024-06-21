@@ -41,6 +41,7 @@ export const MemberCard = ({
         borderRadius={5}
         cursor={'pointer'}
         shadow={'xl'}
+        overflow={'hidden'}
       >
         <Image
           src={member?.img_url as string}
@@ -64,7 +65,11 @@ export const MemberCard = ({
             fontFamily={'var(--font-rubik)'}
             fontWeight={'bold'}
           >
-            {member?.first_name + ' ' + member?.last_name}
+            {member?.salutation +
+              ' ' +
+              member?.first_name +
+              ' ' +
+              member?.last_name}
           </Text>
         </CardBody>
       </Card>

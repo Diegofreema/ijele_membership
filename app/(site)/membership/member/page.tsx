@@ -1,3 +1,4 @@
+import { getProfile } from '@/actions/auth.action';
 import { SingleMember } from '@/components/member/SingleMember';
 import { NextPage } from 'next';
 import { cookies } from 'next/headers';
@@ -5,10 +6,11 @@ import { redirect } from 'next/navigation';
 
 interface Props {}
 
-const page: NextPage<Props> = ({}): JSX.Element => {
+const page = async ({}) => {
   const id = cookies().get('id')?.value;
   if (!id) redirect('/sign-in');
-  return <SingleMember />;
+  const user = await getProfile(id);
+  return <SingleMember user={user} />;
 };
 
 export default page;

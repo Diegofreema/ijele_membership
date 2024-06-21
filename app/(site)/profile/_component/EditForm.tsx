@@ -1,12 +1,13 @@
 'use client';
-import { register } from '@/actions/auth.action';
+import { register, update } from '@/actions/auth.action';
 import { AuthHeader } from '@/components/AuthHeader';
 import { CustomButton } from '@/components/form/CustomButton';
 import { CustomInput } from '@/components/form/CustomInput';
 import { ValidateInput } from '@/components/form/ValidateInput';
 import { CustomText } from '@/components/ui/typography';
+import { MemberType } from '@/types';
 import { createClient } from '@/utils/supabase/client';
-import { loginSchema, registerSchema } from '@/utils/validator';
+import { loginSchema, registerSchema, updateSchema } from '@/utils/validator';
 import {
   Box,
   Flex,
@@ -21,12 +22,14 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { X } from 'lucide-react';
 import { Link } from 'next-view-transitions';
-import { ChangeEventHandler, useRef, useState } from 'react';
+import { ChangeEventHandler, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-type Props = {};
+type Props = {
+  user: MemberType;
+};
 
-export const RegisterForm = ({}: Props): JSX.Element => {
+export const EditForm = ({ user }: Props): JSX.Element => {
   const supabase = createClient();
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
@@ -39,11 +42,9 @@ export const RegisterForm = ({}: Props): JSX.Element => {
     formState: { errors, isSubmitting },
     setValue,
     reset,
-  } = useForm<z.infer<typeof registerSchema>>({
+  } = useForm<z.infer<typeof updateSchema>>({
     defaultValues: {
       email: '',
-      password: '',
-      confirmPassword: '',
       firstName: '',
       lastName: '',
       middleName: '',
@@ -53,37 +54,46 @@ export const RegisterForm = ({}: Props): JSX.Element => {
       title: '',
       img_url: '',
     },
-    resolver: zodResolver(registerSchema),
+    resolver: zodResolver(updateSchema),
   });
   const { img_url, dateOfBirth } = watch();
-  console.log(dateOfBirth);
-
+  useEffect(() => {
+    setValue('email', user?.email);
+    setValue('middleName', user?.middle_name || '');
+    setValue('firstName', user?.first_name);
+    setValue('lastName', user?.last_name);
+    setValue('img_url', user?.img_url || '');
+    setValue('salutation', user?.salutation || '');
+    setValue('title', user?.title || '');
+    setValue('dateOfBirth', user?.dateOfBirth || '');
+    setValue('phoneNumber', user?.phoneNumber || '');
+  }, [user, setValue]);
   const onOpenPicker = () => {
     if (!inputRef.current) return;
     inputRef.current.click();
   };
-  const onSubmit = async (data: z.infer<typeof registerSchema>) => {
+  const onSubmit = async (data: z.infer<typeof updateSchema>) => {
     try {
-      const res = await register({
-        email: data.email,
-        password: data.password,
-        first_name: data.firstName,
-        last_name: data.lastName,
-        middle_name: data.middleName || '',
-        salutation: data.salutation,
-        img_url: data.img_url || '',
-        title: data.title || '',
-        dateOfBirth: data.dateOfBirth || '',
-        gender: data.gender || '',
-        phoneNumber: data.phoneNumber,
-      });
+      const res = await update(
+        {
+          email: data.email,
+          first_name: data.firstName,
+          last_name: data.lastName,
+          middle_name: data.middleName || '',
+          salutation: data.salutation,
+          img_url: data.img_url || '',
+          title: data.title || '',
+          dateOfBirth: data.dateOfBirth || '',
+          phoneNumber: data.phoneNumber,
+        },
+        user?.user_id
+      );
 
-      if (res.error) {
-        console.log(res.error);
-
+      if (res?.error === 'Failed to update') {
+        console.log(res?.error);
         toast({
-          title: 'Email already exists',
-          description: 'Please use a different email address',
+          title: 'Error',
+          description: 'Failed to update profile',
           status: 'error',
           isClosable: true,
           duration: 9000,
@@ -92,14 +102,13 @@ export const RegisterForm = ({}: Props): JSX.Element => {
         return;
       }
       toast({
-        title: 'Account has been created successfully',
-        description: 'Please check your email to verify your account',
+        title: 'Success',
+        description: 'Account has been updated successfully',
         status: 'success',
         isClosable: true,
         duration: 9000,
         position: 'top-right',
       });
-      reset();
     } catch (error) {
       console.log(error);
       toast({
@@ -131,7 +140,6 @@ export const RegisterForm = ({}: Props): JSX.Element => {
           status: 'error',
           duration: 9000,
           isClosable: true,
-          position: 'top-right',
         });
         return;
       }
@@ -146,7 +154,6 @@ export const RegisterForm = ({}: Props): JSX.Element => {
         status: 'error',
         duration: 9000,
         isClosable: true,
-        position: 'top-right',
       });
     } finally {
       setUploading(false);
@@ -160,11 +167,7 @@ export const RegisterForm = ({}: Props): JSX.Element => {
         justifyContent={'center'}
         flexDir={'column'}
       >
-        <AuthHeader
-          type="Sign up"
-          href="/sign-in"
-          text="Already have an account? Log in"
-        />
+        <AuthHeader type="Edit profile" href="" text="" />
         <Flex width="100%" mt={5} justifyContent={'center'}>
           {!img_url ? (
             <Box
@@ -263,13 +266,13 @@ export const RegisterForm = ({}: Props): JSX.Element => {
               placeholder="Enter your last name"
             />
             <ValidateInput
-              label="Middle name (optional)"
+              label="Middle name "
               control={control}
               errors={errors}
               name={'middleName'}
               placeholder="Enter your middle name"
             />
-            <ValidateInput
+            {/* <ValidateInput
               label="Password"
               control={control}
               errors={errors}
@@ -282,7 +285,7 @@ export const RegisterForm = ({}: Props): JSX.Element => {
               errors={errors}
               name={'confirmPassword'}
               placeholder="Confirm your password"
-            />
+            /> */}
           </Box>
           <Box display={'flex'} flexDir={'column'} gap={5} mt={5}>
             <ValidateInput
@@ -308,7 +311,7 @@ export const RegisterForm = ({}: Props): JSX.Element => {
               name={'salutation'}
               placeholder="Select a salutation"
             />
-            <ValidateInput
+            {/* <ValidateInput
               label="Gender"
               control={control}
               errors={errors}
@@ -316,7 +319,7 @@ export const RegisterForm = ({}: Props): JSX.Element => {
               data={['Male', 'Female']}
               name={'gender'}
               placeholder="Select a Gender"
-            />
+            /> */}
             <ValidateInput
               label="Date of birth"
               control={control}
@@ -329,7 +332,8 @@ export const RegisterForm = ({}: Props): JSX.Element => {
         </SimpleGrid>
         <Flex width={'100%'} justifyContent={'center'}>
           <CustomButton
-            text="Sign up"
+            text="Update"
+            loadingText="Updating..."
             onClick={handleSubmit(onSubmit)}
             isLoading={isSubmitting}
             mt={5}

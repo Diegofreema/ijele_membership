@@ -11,12 +11,16 @@ import {
   SimpleGrid,
   Text,
   useColorModeValue,
+  useToast,
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { CustomHeading, CustomText } from '../ui/typography';
+import { usePaystackPayment, PaystackButton } from 'react-paystack';
+import { MemberType } from '@/types';
+import { onSub } from '@/actions/auth.action';
 
 const packages = [
   {
@@ -24,6 +28,7 @@ const packages = [
     price: 'Free',
     benefits: ['Access to limited discounts and member benefits'],
     type: 'regular',
+    fee: 0,
   },
   {
     packageName: 'Annual Membership',
@@ -33,6 +38,7 @@ const packages = [
       'Priority booking for events and programs',
     ],
     type: 'annual',
+    fee: 25000,
   },
   {
     packageName: 'Life Membership',
@@ -42,6 +48,7 @@ const packages = [
       'Special recognition in club publications',
     ],
     type: 'life',
+    fee: 175000,
   },
 
   {
@@ -53,6 +60,7 @@ const packages = [
       'Special acknowledgment on our honorary board',
     ],
     type: 'honorary-board-membership',
+    fee: 3000000,
   },
   {
     packageName: 'Honorary President',
@@ -63,20 +71,86 @@ const packages = [
       'Comprehensive VIP benefits and high-profile recognition',
     ],
     type: 'honorary-president',
+    fee: 5000000,
   },
 ];
-export const SingleMember = () => {
+
+export const SingleMember = ({ user }: { user: MemberType }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const toast = useToast();
   const memberships = searchParams.get('membership');
-  if (!memberships) router.back();
+
   const singleMember = useMemo(
     () => packages.find((p) => p.type === memberships),
     [memberships]
   );
+  const onSuccess = useCallback(
+    async (reference: string) => {
+      toast({
+        title: 'Processing',
+        description: `Please be patient...`,
+        status: 'loading',
+        position: 'top-right',
+      });
+      const { message } = await onSub(user.user_id, singleMember?.type as any);
+      if (message === 'Failed to complete registration') {
+        toast({
+          title: 'Error',
+          description: `Failed to complete registration process`,
+          status: 'error',
+          position: 'top-right',
+        });
+      }
+      if (message === 'success') {
+        toast({
+          title: 'Welcome to the family',
+          description: `You are not part of the Ijele SC`,
+          status: 'success',
+          position: 'top-right',
+        });
+      }
+    },
+    [toast, singleMember?.type, user.user_id]
+  );
+
+  const onClose = useCallback(() => {
+    toast({
+      title: 'Oops!',
+      description: `You are cancelled the transaction`,
+      status: 'info',
+      position: 'top-right',
+    });
+  }, [toast]);
+  const componentProps = {
+    email: user.email,
+    amount: singleMember?.fee! * 100,
+    metadata: {
+      name: user.first_name + ' ' + user.last_name,
+      phone: user.phoneNumber,
+    },
+    publicKey: 'pk_test_52f4b5b31fa901229f5d3e2a1641d7477aacf092',
+    text: 'Register',
+    onSuccess: onSuccess,
+    onClose: onClose,
+  };
+  const config = {
+    reference: new Date().getTime().toString(),
+    email: user.email,
+    amount: singleMember?.fee! * 100,
+    publicKey: 'pk_test_52f4b5b31fa901229f5d3e2a1641d7477aacf092',
+  };
+  const initializePayment = usePaystackPayment(config);
+
+  const onPay = () => {
+    console.log('dggfd');
+
+    // initializePayment({ onSuccess, onClose });
+  };
+
   return (
     <Flex
-      py={50}
+      py={{ base: 100, md: 50 }}
       minHeight={'100vh'}
       alignItems={'center'}
       justifyContent={'center'}
@@ -91,6 +165,8 @@ export const SingleMember = () => {
         <Benefits
           benefits={singleMember?.benefits!}
           price={singleMember?.price!}
+          onPay={onPay}
+          componentProps={componentProps}
         />
       </SimpleGrid>
     </Flex>
@@ -140,9 +216,13 @@ const PremiumCard = ({ packageName }: { packageName: string }) => {
 const Benefits = ({
   benefits,
   price,
+  onPay,
+  componentProps,
 }: {
   benefits: string[];
   price: string;
+  onPay: () => void;
+  componentProps: any;
 }) => {
   const color = useColorModeValue('white', colors.dark);
   const router = useRouter();
@@ -192,17 +272,10 @@ const Benefits = ({
         >
           Go back
         </Button>
-        <Button
-          _hover={{
-            bg: colors.lightBlue,
-            transition: { duration: 0.3, ease: 'easeIn' },
-          }}
-          bg={colors.brown}
-          color={'white'}
-          width={'100%'}
-        >
-          Register
-        </Button>
+        <PaystackButton
+          {...componentProps}
+          className="w-full bg-[#e9c365] text-white rounded-md"
+        />
       </Flex>
     </Box>
   );

@@ -1,16 +1,19 @@
 'use server';
-
+import { addYears, format } from 'date-fns';
 import VerifyEmail from '@/emails/Verify';
 import {
   generateRandomString,
   hashPasswordBcrypt,
   verifyPasswordBcrypt,
 } from '@/lib/helper';
-import { MemberType, RegisterMemberType } from '@/types';
+import { MemberType, RegisterMemberType, TypeEnums, UpdateType } from '@/types';
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { Resend } from 'resend';
+import { z } from 'zod';
+import { updateSchema } from '@/utils/validator';
+import { revalidatePath } from 'next/cache';
 const resend = new Resend(process.env.RESEND_KEY);
 const api = process.env.BASE_URL;
 export const login = async ({
@@ -40,9 +43,9 @@ export const login = async ({
     return { error: 'Invalid credentials' };
   }
 
-  if (!data.verified) {
-    return { error: 'not verified' };
-  }
+  // if (!data.verified) {
+  //   return { error: 'not verified' };
+  // }
   cookies().set('id', data.user_id, { secure: true });
   redirect('/profile');
 };
@@ -97,7 +100,22 @@ export const register = async (values: RegisterMemberType) => {
   }
   redirect('/sign-in');
 };
+export const update = async (values: UpdateType, userId: string) => {
+  const supabase = createClient();
 
+  const { error } = await supabase
+    .from('users')
+    .update({ ...values })
+    .eq('user_id', userId);
+
+  if (error) {
+    console.log('Error:', error.message);
+    return { error: 'Failed to update' };
+  }
+
+  revalidatePath('/profile');
+  redirect('/profile');
+};
 export const getCookies = async () => {
   return cookies().get('id')?.value;
 };
@@ -111,6 +129,16 @@ export const getProfile = async (id: string) => {
     .single();
   if (error) {
     throw new Error('Failed to get profile data');
+  }
+  return data;
+};
+
+export const getAllMembers = async () => {
+  const supabase = createClient();
+  const { data, error } = await supabase.from('users').select();
+
+  if (error) {
+    throw new Error('Failed to get members');
   }
   return data;
 };
@@ -133,4 +161,32 @@ export const verifyEmail = async (id: string) => {
   }
 
   return { message: 'Email verified' };
+};
+
+export const onSub = async (id: string, type: TypeEnums) => {
+  const supabase = createClient();
+  const currentDate = new Date();
+  const oneYearFromNow = addYears(currentDate, 1);
+  const threeYearsFromNow = addYears(currentDate, 3);
+  const duration =
+    type === 'annual'
+      ? format(oneYearFromNow, 'dd/mm/yyyy')
+      : type === 'honorary-board-membership'
+      ? format(threeYearsFromNow, 'dd/mm/yyyy')
+      : type === 'honorary-president'
+      ? format(threeYearsFromNow, 'dd/mm/yyyy')
+      : null;
+  const { error } = await supabase
+    .from('users')
+    .update({
+      type: type,
+      duration: duration,
+    })
+    .eq('user_id', id);
+
+  if (error) {
+    return { message: 'Failed to complete registration' };
+  }
+
+  return { message: 'success' };
 };
