@@ -71,7 +71,7 @@ export const ResetPassword = ({}: Props): JSX.Element => {
   return (
     <Flex mt={{ base: 150, md: 50 }}>
       <Flex
-        width={{ base: '90%', md: '70%', lg: '50%' }}
+        width={{ base: '90%', md: '50%' }}
         mx="auto"
         justifyContent={'center'}
         flexDir={'column'}

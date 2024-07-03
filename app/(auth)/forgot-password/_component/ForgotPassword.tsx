@@ -9,16 +9,19 @@ import { forgotPassword, loginSchema } from '@/utils/validator';
 import { Box, Flex, useToast } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link } from 'next-view-transitions';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 type Props = {};
 
 export const ForgotPassword = ({}: Props): JSX.Element => {
   const toast = useToast();
+  const router = useRouter();
   const {
     control,
     handleSubmit,
     watch,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<z.infer<typeof forgotPassword>>({
     defaultValues: {
@@ -43,10 +46,12 @@ export const ForgotPassword = ({}: Props): JSX.Element => {
         toast({
           title: 'Email sent',
           description: 'Please check your email for a reset link',
-          status: 'error',
+          status: 'success',
           position: 'top-right',
           duration: 5000,
         });
+        reset();
+        router.push('/sign-in');
       }
     } catch (error) {
       toast({
@@ -93,6 +98,7 @@ export const ForgotPassword = ({}: Props): JSX.Element => {
             text="Submit"
             onClick={handleSubmit(onSubmit)}
             isLoading={isSubmitting}
+            loadingText="Submitting..."
             maxWidth={300}
             width="100%"
             mx="auto"
