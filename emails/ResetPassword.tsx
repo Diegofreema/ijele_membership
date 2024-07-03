@@ -29,9 +29,10 @@ export const ResetPassword = ({ resetLink }: VerificationLink) => {
       <Tailwind>
         <Body className="bg-white my-auto mx-auto font-sans px-2">
           <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] max-w-[465px]">
-            <Section className="mt-[32px] flex justify-center"></Section>
+            <Heading className="text-white text-center">
+              This is from IjeleSC Membership website.
+            </Heading>
 
-            <Section className="text-center mt-[32px] mb-[32px]"></Section>
             <Section className="flex justify-center">
               <Text className="text-black text-[14px] leading-[24px] text-center">
                 follow this link to reset your password{' '}

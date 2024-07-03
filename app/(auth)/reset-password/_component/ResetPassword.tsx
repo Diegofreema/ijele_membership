@@ -56,9 +56,17 @@ export const ResetPassword = ({}: Props): JSX.Element => {
           duration: 5000,
         });
         reset();
-        router.push('/sign-in');
+        router.replace('/sign-in');
       }
-    } catch (error) {}
+    } catch (error) {
+      toast({
+        status: 'error',
+        title: "Password Couldn't reset password",
+        description: 'Please try again later',
+        position: 'top-right',
+        duration: 5000,
+      });
+    }
   };
   return (
     <Flex mt={{ base: 150, md: 50 }}>
