@@ -37,24 +37,10 @@ export const VerifyEmail = ({
       <Tailwind>
         <Body className="bg-white my-auto mx-auto font-sans px-2">
           <Container className="border border-solid border-[#eaeaea] rounded my-[40px] mx-auto p-[20px] max-w-[465px]">
-            <Section className="mt-[32px] flex justify-center">
-              <Img
-                src={userImage}
-                width="40"
-                height="37"
-                alt="logo"
-                className="my-0 mx-auto"
-              />
-            </Section>
+            <Heading className="text-white text-center">
+              This is from IjeleSC Membership website, Please verify your email.
+            </Heading>
 
-            <Section className="flex justify-center">
-              <Img
-                className="rounded-full"
-                src={userImage}
-                width="64"
-                height="64"
-              />
-            </Section>
             <Section className="text-center mt-[32px] mb-[32px]">
               <Button className="bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3">
                 Welcome to the family {fullName}
