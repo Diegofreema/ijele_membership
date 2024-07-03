@@ -48,7 +48,6 @@ export const login = async ({
   //   return { error: 'not verified' };
   // }
   cookies().set('id', data.user_id, { secure: true });
-  redirect('/profile');
 };
 
 export const register = async (values: RegisterMemberType) => {

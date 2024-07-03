@@ -2,7 +2,6 @@
 import { login } from '@/actions/auth.action';
 import { AuthHeader } from '@/components/AuthHeader';
 import { CustomButton } from '@/components/form/CustomButton';
-import { CustomInput } from '@/components/form/CustomInput';
 import { ValidateInput } from '@/components/form/ValidateInput';
 import { CustomText } from '@/components/ui/typography';
 import { loginSchema } from '@/utils/validator';
@@ -12,10 +11,18 @@ import { Link } from 'next-view-transitions';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { colors } from '../../../../constant';
+import { useRouter, useSearchParams } from 'next/navigation';
 type Props = {};
 
 export const LoginForm = ({}: Props): JSX.Element => {
   const toast = useToast();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const prev = searchParams.get('prev');
+  const membership = searchParams.get('membership');
+  console.log({ prev, membership });
+
   const {
     control,
     handleSubmit,
@@ -67,6 +74,12 @@ export const LoginForm = ({}: Props): JSX.Element => {
         status: 'success',
         position: 'top-right',
       });
+
+      if (prev) {
+        router.replace(`${prev}?membership=${membership}`);
+      } else {
+        router.replace('/profile');
+      }
     } catch (error) {}
   };
   return (

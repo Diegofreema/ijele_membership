@@ -15,10 +15,10 @@ import {
 } from '@chakra-ui/react';
 import { motion } from 'framer-motion';
 import { Check } from 'lucide-react';
-import { useRouter, useSearchParams } from 'next/navigation';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
 import { CustomHeading, CustomText } from '../ui/typography';
-import { usePaystackPayment, PaystackButton } from 'react-paystack';
+import { usePaystackPayment, PaystackConsumer } from 'react-paystack';
 import { MemberType } from '@/types';
 import { onSub } from '@/actions/auth.action';
 
@@ -79,6 +79,7 @@ export const SingleMember = ({ user }: { user: MemberType }) => {
   const searchParams = useSearchParams();
   const router = useRouter();
   const toast = useToast();
+  const pathname = usePathname();
   const memberships = searchParams.get('membership');
 
   const singleMember = useMemo(
@@ -119,33 +120,19 @@ export const SingleMember = ({ user }: { user: MemberType }) => {
       position: 'top-right',
     });
   }, [toast]);
-  const componentProps = {
-    email: user?.email,
-    amount: singleMember?.fee! * 100,
-    metadata: {
-      name: user?.first_name + ' ' + user?.last_name,
-      phone: user?.phoneNumber,
-    },
-    publicKey: 'pk_test_52f4b5b31fa901229f5d3e2a1641d7477aacf092',
-    text: 'Register',
-    onSuccess: () => onSuccess(),
-    onClose: () => onClose(),
-  };
+
   const config = {
     reference: new Date().getTime().toString(),
     email: user?.email,
     amount: singleMember?.fee! * 100,
     publicKey: 'pk_test_52f4b5b31fa901229f5d3e2a1641d7477aacf092',
   };
-  const initializePayment = usePaystackPayment(config);
 
-  const onPay = () => {
-    if (!user) {
-      router.push('/sign-in');
-      return;
-    }
-
-    initializePayment({ onSuccess, onClose });
+  const componentProps = {
+    ...config,
+    text: 'Register',
+    onSuccess: () => onSuccess(),
+    onClose: () => onClose(),
   };
 
   return (
@@ -162,12 +149,80 @@ export const SingleMember = ({ user }: { user: MemberType }) => {
         gap={{ base: 5, md: 10 }}
       >
         <PremiumCard packageName={singleMember?.packageName!} />
-        <Benefits
-          benefits={singleMember?.benefits!}
-          price={singleMember?.price!}
-          onPay={onPay}
-          componentProps={componentProps}
-        />
+        <Box
+          as={motion.div}
+          initial={{ opacity: 0, x: 50 }}
+          whileInView={{
+            opacity: 1,
+            x: 0,
+            transition: { duration: 0.3, ease: 'easeIn' },
+          }}
+          display={'flex'}
+          flexDir={'column'}
+          gap={5}
+          viewport={{ once: true }}
+        >
+          <CustomHeading
+            text={singleMember?.price!}
+            mb={5}
+            textColor={'black'}
+          />
+
+          <CustomText text="Benefits includes" textColor={'black'} />
+          {singleMember?.benefits.map((text, i) => (
+            <Flex key={i} gap={3} alignItems={'center'}>
+              <Check color={colors.darkBlue} size={20} />
+              <Text
+                textColor={'black'}
+                fontWeight={'500'}
+                fontFamily={'var(--font-rubik)'}
+              >
+                {text}
+              </Text>
+            </Flex>
+          ))}
+
+          <Flex gap={5}>
+            <Button
+              onClick={() => router.back()}
+              _hover={{
+                bg: colors.lightBlue,
+                transition: { duration: 0.3, ease: 'easeIn' },
+              }}
+              bg={colors.darkBlue}
+              color={'white'}
+              width={'100%'}
+            >
+              Go back
+            </Button>
+            <PaystackConsumer {...componentProps}>
+              {({ initializePayment }) => (
+                <button
+                  className="w-full bg-[#e9c365] text-white rounded-md "
+                  onClick={() => {
+                    if (!user) {
+                      router.push(
+                        `/sign-in?prev=${pathname}&membership=${memberships}`
+                      );
+                      toast({
+                        status: 'info',
+                        title: 'Sign In',
+                        description: 'Please sign in to continue',
+                        position: 'top-right',
+                        isClosable: true,
+                      });
+                      return;
+                    }
+
+                    initializePayment(onSuccess, onClose);
+                  }}
+                >
+                  Register
+                </button>
+              )}
+            </PaystackConsumer>
+          </Flex>
+        </Box>
       </SimpleGrid>
     </Flex>
   );
@@ -213,73 +268,82 @@ const PremiumCard = ({ packageName }: { packageName: string }) => {
   );
 };
 
-const Benefits = ({
-  benefits,
-  price,
-  onPay,
-  componentProps,
-}: {
-  benefits: string[];
-  price: string;
-  onPay: () => void;
-  componentProps: any;
-}) => {
-  const color = useColorModeValue('white', colors.dark);
-  const router = useRouter();
-  const onBack = () => {
-    router.back();
-  };
-  return (
-    <Box
-      as={motion.div}
-      initial={{ opacity: 0, x: 50 }}
-      whileInView={{
-        opacity: 1,
-        x: 0,
-        transition: { duration: 0.3, ease: 'easeIn' },
-      }}
-      display={'flex'}
-      flexDir={'column'}
-      gap={5}
-      viewport={{ once: true }}
-    >
-      <CustomHeading text={price} mb={5} textColor={'black'} />
+// const Benefits = ({
+//   benefits,
+//   price,
+//   onPay,
+//   componentProps,
+// }: {
+//   benefits: string[];
+//   price: string;
+//   onPay: () => void;
+//   componentProps: any;
+// }) => {
+//   const color = useColorModeValue('white', colors.dark);
+//   const router = useRouter();
+//   const onBack = () => {
+//     router.back();
+//   };
+//   return (
+//     <Box
+//       as={motion.div}
+//       initial={{ opacity: 0, x: 50 }}
+//       whileInView={{
+//         opacity: 1,
+//         x: 0,
+//         transition: { duration: 0.3, ease: 'easeIn' },
+//       }}
+//       display={'flex'}
+//       flexDir={'column'}
+//       gap={5}
+//       viewport={{ once: true }}
+//     >
+//       <CustomHeading text={price} mb={5} textColor={'black'} />
 
-      <CustomText text="Benefits includes" textColor={'black'} />
-      {benefits.map((text, i) => (
-        <Flex key={i} gap={3} alignItems={'center'}>
-          <Check color={colors.darkBlue} size={20} />
-          <Text
-            textColor={'black'}
-            fontWeight={'500'}
-            fontFamily={'var(--font-rubik)'}
-          >
-            {text}
-          </Text>
-        </Flex>
-      ))}
+//       <CustomText text="Benefits includes" textColor={'black'} />
+//       {benefits.map((text, i) => (
+//         <Flex key={i} gap={3} alignItems={'center'}>
+//           <Check color={colors.darkBlue} size={20} />
+//           <Text
+//             textColor={'black'}
+//             fontWeight={'500'}
+//             fontFamily={'var(--font-rubik)'}
+//           >
+//             {text}
+//           </Text>
+//         </Flex>
+//       ))}
 
-      <Flex gap={5}>
-        <Button
-          onClick={onBack}
-          _hover={{
-            bg: colors.lightBlue,
-            transition: { duration: 0.3, ease: 'easeIn' },
-          }}
-          bg={colors.darkBlue}
-          color={'white'}
-          width={'100%'}
-        >
-          Go back
-        </Button>
-        <Button
-          onClick={onPay}
-          // {...componentProps}
-          className="w-full bg-[#e9c365] text-white rounded-md"
-        >
-          Register
-        </Button>
-      </Flex>
-    </Box>
-  );
-};
+//       <Flex gap={5}>
+//         <Button
+//           onClick={onBack}
+//           _hover={{
+//             bg: colors.lightBlue,
+//             transition: { duration: 0.3, ease: 'easeIn' },
+//           }}
+//           bg={colors.darkBlue}
+//           color={'white'}
+//           width={'100%'}
+//         >
+//           Go back
+//         </Button>
+//         <PaystackConsumer {...componentProps}>
+//           {({ initializePayment }) => (
+//             <button
+//               onClick={() => initializePayment(handleSuccess, handleClose)}
+//             >
+//               Paystack Consumer Implementation
+//             </button>
+//           )}
+//         </PaystackConsumer>
+//         <Button
+//           onClick={onPay}
+//           // {...componentProps}
+//           className="w-full bg-[#e9c365] text-white rounded-md"
+//         >
+//           Register
+//         </Button>
+//       </Flex>
+//     </Box>
+//   );
+// };
