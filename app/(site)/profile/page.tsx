@@ -11,6 +11,7 @@ const page = async (props: Props) => {
   const id = cookies().get('id')?.value;
   if (!id) redirect('/sign-in');
   const user = await getProfile(id);
+  if (!user) redirect('/sign-in');
 
   return (
     <Wrapper>
