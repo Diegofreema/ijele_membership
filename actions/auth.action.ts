@@ -44,9 +44,9 @@ export const login = async ({
     return { error: 'Invalid credentials' };
   }
 
-  // if (!data.verified) {
-  //   return { error: 'not verified' };
-  // }
+  if (!data.verified) {
+    return { error: 'not verified' };
+  }
   cookies().set('id', data.user_id, { secure: true });
 };
 
@@ -135,7 +135,7 @@ export const getProfile = async (id: string) => {
   return data;
 };
 
-export const forgotPassword = async (email: string) => {
+export const forgotPasswordFn = async (email: string) => {
   const supabase = createClient();
   const { data, error } = await supabase
     .from('users')
@@ -158,6 +158,7 @@ export const forgotPassword = async (email: string) => {
         resetLink: `${api}/reset-password?id=${data[0]?.user_id}`,
       }),
     });
+    return { message: 'email sent' };
   }
 };
 

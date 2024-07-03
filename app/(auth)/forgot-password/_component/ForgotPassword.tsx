@@ -1,11 +1,12 @@
 'use client';
+import { forgotPasswordFn } from '@/actions/auth.action';
 import { AuthHeader } from '@/components/AuthHeader';
 import { CustomButton } from '@/components/form/CustomButton';
 import { CustomInput } from '@/components/form/CustomInput';
 import { ValidateInput } from '@/components/form/ValidateInput';
 import { CustomText } from '@/components/ui/typography';
 import { forgotPassword, loginSchema } from '@/utils/validator';
-import { Box, Flex } from '@chakra-ui/react';
+import { Box, Flex, useToast } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link } from 'next-view-transitions';
 import { useForm } from 'react-hook-form';
@@ -13,6 +14,7 @@ import { z } from 'zod';
 type Props = {};
 
 export const ForgotPassword = ({}: Props): JSX.Element => {
+  const toast = useToast();
   const {
     control,
     handleSubmit,
@@ -25,8 +27,36 @@ export const ForgotPassword = ({}: Props): JSX.Element => {
     resolver: zodResolver(forgotPassword),
   });
 
-  const onSubmit = (data: z.infer<typeof forgotPassword>) => {
-    console.log(data);
+  const onSubmit = async (data: z.infer<typeof forgotPassword>) => {
+    try {
+      const res = await forgotPasswordFn(data.email);
+      if (res?.message === 'email not found') {
+        toast({
+          title: 'Email not found',
+          description: 'Please use a registered email',
+          status: 'error',
+          position: 'top-right',
+          duration: 5000,
+        });
+      }
+      if (res?.message === 'email sent') {
+        toast({
+          title: 'Email sent',
+          description: 'Please check your email for a reset link',
+          status: 'error',
+          position: 'top-right',
+          duration: 5000,
+        });
+      }
+    } catch (error) {
+      toast({
+        title: 'Email not sent',
+        description: 'Please try again later',
+        status: 'error',
+        position: 'top-right',
+        duration: 5000,
+      });
+    }
   };
   return (
     <Flex mt={{ base: 150, md: 50 }} minH={'100vh'}>
