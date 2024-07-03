@@ -5,6 +5,7 @@ import { EditForm } from '../_component/EditForm';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { getProfile } from '@/actions/auth.action';
+import { MemberType } from '@/types';
 
 type Props = {};
 

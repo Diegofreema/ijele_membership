@@ -1,13 +1,12 @@
 'use client';
-import { register, update } from '@/actions/auth.action';
+import { update } from '@/actions/auth.action';
 import { AuthHeader } from '@/components/AuthHeader';
 import { CustomButton } from '@/components/form/CustomButton';
-import { CustomInput } from '@/components/form/CustomInput';
 import { ValidateInput } from '@/components/form/ValidateInput';
 import { CustomText } from '@/components/ui/typography';
 import { MemberType } from '@/types';
 import { createClient } from '@/utils/supabase/client';
-import { loginSchema, registerSchema, updateSchema } from '@/utils/validator';
+import { updateSchema } from '@/utils/validator';
 import {
   Box,
   Flex,
@@ -21,12 +20,11 @@ import {
 } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { X } from 'lucide-react';
-import { Link } from 'next-view-transitions';
 import { ChangeEventHandler, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 type Props = {
-  user: MemberType;
+  user: MemberType | null;
 };
 
 export const EditForm = ({ user }: Props): JSX.Element => {
@@ -58,15 +56,17 @@ export const EditForm = ({ user }: Props): JSX.Element => {
   });
   const { img_url, dateOfBirth } = watch();
   useEffect(() => {
-    setValue('email', user?.email);
-    setValue('middleName', user?.middle_name || '');
-    setValue('firstName', user?.first_name);
-    setValue('lastName', user?.last_name);
-    setValue('img_url', user?.img_url || '');
-    setValue('salutation', user?.salutation || '');
-    setValue('title', user?.title || '');
-    setValue('dateOfBirth', user?.dateOfBirth || '');
-    setValue('phoneNumber', user?.phoneNumber || '');
+    if (user) {
+      setValue('email', user?.email);
+      setValue('middleName', user?.middle_name || '');
+      setValue('firstName', user?.first_name);
+      setValue('lastName', user?.last_name);
+      setValue('img_url', user?.img_url || '');
+      setValue('salutation', user?.salutation || '');
+      setValue('title', user?.title || '');
+      setValue('dateOfBirth', user?.dateOfBirth || '');
+      setValue('phoneNumber', user?.phoneNumber || '');
+    }
   }, [user, setValue]);
   const onOpenPicker = () => {
     if (!inputRef.current) return;
@@ -86,7 +86,7 @@ export const EditForm = ({ user }: Props): JSX.Element => {
           dateOfBirth: data.dateOfBirth || '',
           phoneNumber: data.phoneNumber,
         },
-        user?.user_id
+        user?.user_id!
       );
 
       if (res?.error === 'Failed to update') {
