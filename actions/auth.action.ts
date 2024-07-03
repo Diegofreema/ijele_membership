@@ -87,7 +87,7 @@ export const register = async (values: RegisterMemberType) => {
     return { error: error.message };
   }
   const { error: emailError } = await resend.emails.send({
-    from: '<onboarding@resend.dev>',
+    from: `Support <${process.env.SENDER_EMAIL}>`,
     to: [data?.email],
     subject: 'Verify your email',
     react: VerifyEmail({
@@ -99,7 +99,7 @@ export const register = async (values: RegisterMemberType) => {
   if (emailError) {
     console.log('Error:', emailError);
   }
-  redirect('/sign-in');
+  !emailError && redirect('/sign-in');
 };
 export const update = async (values: UpdateType, userId: string) => {
   const supabase = createClient();
@@ -152,7 +152,7 @@ export const forgotPassword = async (email: string) => {
 
   if (data.length > 0) {
     const { error: emailError } = await resend.emails.send({
-      from: '<onboarding@resend.dev>',
+      from: `Support <${process.env.SENDER_EMAIL}>`,
       to: [email],
       subject: 'Reset your password',
       react: ResetPassword({

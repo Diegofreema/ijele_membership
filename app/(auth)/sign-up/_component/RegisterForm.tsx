@@ -78,8 +78,8 @@ export const RegisterForm = ({}: Props): JSX.Element => {
         phoneNumber: data.phoneNumber,
       });
 
-      if (res.error) {
-        console.log(res.error);
+      if (res?.error) {
+        console.log(res?.error);
 
         toast({
           title: 'Email already exists',
