@@ -8,7 +8,7 @@ interface Props {
 const layout = async ({ children }: Props) => {
   const id = cookies().get('id')?.value;
   if (id) redirect('/profile');
-  return <div>{children}</div>;
+  return <div className="min-h-screen">{children}</div>;
 };
 
 export default layout;
