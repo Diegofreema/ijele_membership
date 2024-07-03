@@ -35,7 +35,7 @@ export const links = [
   },
   {
     href: '/members',
-    label: 'Members',
+    label: 'Notable Members',
   },
 ];
 export const Header = ({ id: userId }: Props) => {
