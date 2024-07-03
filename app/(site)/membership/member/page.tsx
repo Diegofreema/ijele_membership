@@ -8,9 +8,9 @@ interface Props {}
 
 const page = async ({}) => {
   const id = cookies().get('id')?.value;
-  if (!id) redirect('/sign-in');
-  const user = await getProfile(id);
-  return <SingleMember user={user} />;
+
+  const user = await getProfile(id!);
+  return <SingleMember user={user!} />;
 };
 
 export default page;

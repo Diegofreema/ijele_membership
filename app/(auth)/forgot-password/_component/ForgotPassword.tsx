@@ -29,7 +29,7 @@ export const ForgotPassword = ({}: Props): JSX.Element => {
     console.log(data);
   };
   return (
-    <Flex mt={{ base: 50, md: 50 }}>
+    <Flex mt={{ base: 150, md: 50 }} minH={'100vh'}>
       <Flex
         width={{ base: '90%', md: '70%', lg: '50%' }}
         mx="auto"
@@ -42,7 +42,15 @@ export const ForgotPassword = ({}: Props): JSX.Element => {
           text="Enter your email and we will send you a reset link"
         />
 
-        <Box display={'flex'} flexDir={'column'} gap={5} mt={5}>
+        <Box
+          display={'flex'}
+          flexDir={'column'}
+          gap={5}
+          mt={5}
+          mx={'auto'}
+          maxWidth={500}
+          width={'100%'}
+        >
           <ValidateInput
             label="Email"
             control={control}
@@ -55,6 +63,9 @@ export const ForgotPassword = ({}: Props): JSX.Element => {
             text="Submit"
             onClick={handleSubmit(onSubmit)}
             isLoading={isSubmitting}
+            maxWidth={300}
+            width="100%"
+            mx="auto"
           />
         </Box>
       </Flex>

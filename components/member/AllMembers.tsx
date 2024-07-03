@@ -15,10 +15,7 @@ type Props = {
 };
 
 export const AllMembers = ({ members }: Props): JSX.Element => {
-  const regular = useMemo(
-    () => members?.filter((m) => m.type === 'regular'),
-    [members]
-  );
+  const memberNotRegular = members?.filter((m) => m.type !== 'regular');
   const president = useMemo(
     () => members?.filter((m) => m.type === 'honorary-president'),
     [members]
@@ -38,7 +35,7 @@ export const AllMembers = ({ members }: Props): JSX.Element => {
   return (
     <LightContainer>
       <Wrapper>
-        {members.length === 0 && (
+        {memberNotRegular.length === 0 && (
           <Flex
             flexDir={'column'}
             gap={5}
@@ -49,7 +46,7 @@ export const AllMembers = ({ members }: Props): JSX.Element => {
             <Box>
               <CustomHeading
                 textColor={'white'}
-                text="We have not members yet"
+                text="We have no members yet"
                 textAlign={'center'}
               />
               <CustomHeading
@@ -63,7 +60,7 @@ export const AllMembers = ({ members }: Props): JSX.Element => {
             </Link>
           </Flex>
         )}
-        {members?.length > 0 && (
+        {memberNotRegular?.length > 0 && (
           <Box display={'flex'} flexDir={'column'} gap={10}>
             {president.length > 0 && (
               <MembersPart members={president} title="Honorary President" />
@@ -76,9 +73,6 @@ export const AllMembers = ({ members }: Props): JSX.Element => {
             )}
             {annual.length > 0 && (
               <MembersPart members={annual} title="Annual Membership" />
-            )}
-            {regular.length > 0 && (
-              <MembersPart members={regular} title="Regular Membership" />
             )}
           </Box>
         )}

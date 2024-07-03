@@ -19,6 +19,7 @@ import { usePathname } from 'next/navigation';
 import { colors } from '@/constant';
 import { CustomButton } from './form/CustomButton';
 import { logOut } from '@/actions/auth.action';
+import { MobileDrawer } from './ui/MobileDrawer';
 
 interface Props {
   id: string | undefined;
@@ -79,7 +80,7 @@ export const Header = ({ id: userId }: Props) => {
           />
         </Link>
         <Links />
-        <Flex alignItems={'center'} gap={5}>
+        <Flex alignItems={'center'} gap={5} hideBelow={'md'}>
           {userId ? (
             <CustomButton text="Log out" onClick={onLogOut} />
           ) : (
@@ -87,7 +88,7 @@ export const Header = ({ id: userId }: Props) => {
           )}
           <ToggleDarkMode />
         </Flex>
-        {/* <MobileDrawer isOpen={isOpen} onClose={onClose} /> */}
+        <MobileDrawer isOpen={isOpen} onClose={onClose} />
         <IconButton
           hideFrom="md"
           onClick={onOpen}
@@ -157,7 +158,7 @@ export const ToggleDarkMode = () => {
 
 const AuthButtons = () => {
   return (
-    <Flex gap={2}>
+    <Flex gap={2} hideBelow={'md'}>
       <Link href="/sign-in">
         <CustomButton text="Login" />
       </Link>

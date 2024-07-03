@@ -109,22 +109,22 @@ export const SingleMember = ({ user }: { user: MemberType }) => {
         position: 'top-right',
       });
     }
-  }, [toast, singleMember?.type, user.user_id]);
+  }, [toast, singleMember?.type, user?.user_id]);
 
   const onClose = useCallback(() => {
     toast({
       title: 'Oops!',
-      description: `You are cancelled the transaction`,
+      description: `You cancelled the transaction`,
       status: 'info',
       position: 'top-right',
     });
   }, [toast]);
   const componentProps = {
-    email: user.email,
+    email: user?.email,
     amount: singleMember?.fee! * 100,
     metadata: {
-      name: user.first_name + ' ' + user.last_name,
-      phone: user.phoneNumber,
+      name: user?.first_name + ' ' + user?.last_name,
+      phone: user?.phoneNumber,
     },
     publicKey: 'pk_test_52f4b5b31fa901229f5d3e2a1641d7477aacf092',
     text: 'Register',
@@ -133,16 +133,19 @@ export const SingleMember = ({ user }: { user: MemberType }) => {
   };
   const config = {
     reference: new Date().getTime().toString(),
-    email: user.email,
+    email: user?.email,
     amount: singleMember?.fee! * 100,
     publicKey: 'pk_test_52f4b5b31fa901229f5d3e2a1641d7477aacf092',
   };
   const initializePayment = usePaystackPayment(config);
 
   const onPay = () => {
-    console.log('dggfd');
+    if (!user) {
+      router.push('/sign-in');
+      return;
+    }
 
-    // initializePayment({ onSuccess, onClose });
+    initializePayment({ onSuccess, onClose });
   };
 
   return (
@@ -269,10 +272,13 @@ const Benefits = ({
         >
           Go back
         </Button>
-        <PaystackButton
-          {...componentProps}
+        <Button
+          onClick={onPay}
+          // {...componentProps}
           className="w-full bg-[#e9c365] text-white rounded-md"
-        />
+        >
+          Register
+        </Button>
       </Flex>
     </Box>
   );

@@ -1,6 +1,6 @@
 import { ResetPassword } from './_component/ResetPassword';
 
-const page = ({}): JSX.Element => {
+const page = (): JSX.Element => {
   return <ResetPassword />;
 };
 

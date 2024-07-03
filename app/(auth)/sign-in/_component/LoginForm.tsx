@@ -70,7 +70,7 @@ export const LoginForm = ({}: Props): JSX.Element => {
     } catch (error) {}
   };
   return (
-    <Flex mt={{ base: 50, md: 100 }}>
+    <Flex mt={{ base: 150, md: 50 }}>
       <Flex
         width={{ base: '90%', md: '70%', lg: '50%' }}
         mx="auto"
@@ -97,6 +97,7 @@ export const LoginForm = ({}: Props): JSX.Element => {
             errors={errors}
             name={'password'}
             placeholder="Enter your password"
+            type={'password'}
           />
           <CustomButton
             text="Login"
@@ -109,6 +110,7 @@ export const LoginForm = ({}: Props): JSX.Element => {
               text="Forgot password?"
               fontWeight={'bold'}
               textDecoration={'underline'}
+              textColor={'black'}
             />
           </Link>
         </Box>

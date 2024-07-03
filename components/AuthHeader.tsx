@@ -29,6 +29,7 @@ export const AuthHeader = ({ href, text, type }: Props): JSX.Element => {
           text={text}
           textColor={'black'}
           textDecoration={href === '' ? 'none' : 'underline'}
+          textAlign={'center'}
         />
       </Link>
     </Box>

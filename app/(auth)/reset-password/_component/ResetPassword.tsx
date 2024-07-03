@@ -1,23 +1,28 @@
 'use client';
+import { resetPasswordFn } from '@/actions/auth.action';
 import { AuthHeader } from '@/components/AuthHeader';
 import { CustomButton } from '@/components/form/CustomButton';
-import { CustomInput } from '@/components/form/CustomInput';
 import { ValidateInput } from '@/components/form/ValidateInput';
-import { CustomText } from '@/components/ui/typography';
-import { forgotPassword, loginSchema, resetPassword } from '@/utils/validator';
-import { Box, Flex } from '@chakra-ui/react';
+import { resetPassword } from '@/utils/validator';
+import { Box, Flex, useToast } from '@chakra-ui/react';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Link } from 'next-view-transitions';
+import { notFound, useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 type Props = {};
 
 export const ResetPassword = ({}: Props): JSX.Element => {
+  const searchParams = useSearchParams();
+
+  const id = searchParams.get('id');
+  const toast = useToast();
+  const router = useRouter();
   const {
     control,
     handleSubmit,
     watch,
     formState: { errors, isSubmitting },
+    reset,
   } = useForm<z.infer<typeof resetPassword>>({
     defaultValues: {
       confirmPassword: '',
@@ -25,12 +30,38 @@ export const ResetPassword = ({}: Props): JSX.Element => {
     },
     resolver: zodResolver(resetPassword),
   });
+  if (!id) {
+    return notFound();
+  }
+  const onSubmit = async (data: z.infer<typeof resetPassword>) => {
+    try {
+      const { message } = await resetPasswordFn(id, data.password);
+      if (message === 'Failed to change password') {
+        toast({
+          status: 'error',
+          title: 'Failed to change password',
+          description: 'Please try again later',
+          position: 'top-right',
+          duration: 5000,
+        });
+        return;
+      }
 
-  const onSubmit = (data: z.infer<typeof resetPassword>) => {
-    console.log(data);
+      if (message === 'Password changed successfully') {
+        toast({
+          status: 'success',
+          title: 'Password changed successfully',
+          description: 'Please login with your new password',
+          position: 'top-right',
+          duration: 5000,
+        });
+        reset();
+        router.push('/sign-in');
+      }
+    } catch (error) {}
   };
   return (
-    <Flex mt={{ base: 50, md: 50 }}>
+    <Flex mt={{ base: 150, md: 50 }}>
       <Flex
         width={{ base: '90%', md: '70%', lg: '50%' }}
         mx="auto"

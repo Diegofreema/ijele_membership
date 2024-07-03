@@ -14,6 +14,7 @@ import { Resend } from 'resend';
 import { z } from 'zod';
 import { updateSchema } from '@/utils/validator';
 import { revalidatePath } from 'next/cache';
+import ResetPassword from '@/emails/ResetPassword';
 const resend = new Resend(process.env.RESEND_KEY);
 const api = process.env.BASE_URL;
 export const login = async ({
@@ -128,9 +129,37 @@ export const getProfile = async (id: string) => {
     .eq('user_id', id)
     .single();
   if (error) {
-    throw new Error('Failed to get profile data');
+    console.log(error);
+
+    // throw new Error('Failed to get profile data');
   }
   return data;
+};
+
+export const forgotPassword = async (email: string) => {
+  const supabase = createClient();
+  const { data, error } = await supabase
+    .from('users')
+    .select()
+    .eq('email', email);
+
+  if (error) {
+    throw new Error('Failed to get send email');
+  }
+  if (data.length === 0) {
+    return { message: 'email not found' };
+  }
+
+  if (data.length > 0) {
+    const { error: emailError } = await resend.emails.send({
+      from: '<onboarding@resend.dev>',
+      to: [email],
+      subject: 'Reset your password',
+      react: ResetPassword({
+        resetLink: `${api}/reset-password?id=${data[0]?.user_id}`,
+      }),
+    });
+  }
 };
 
 export const getAllMembers = async () => {
@@ -189,4 +218,22 @@ export const onSub = async (id: string, type: TypeEnums) => {
   }
 
   return { message: 'success' };
+};
+
+export const resetPasswordFn = async (id: string, password: string) => {
+  const hashedPassword = await hashPasswordBcrypt(password);
+  if (!hashedPassword) return { message: 'Failed to change password' };
+  const supabase = createClient();
+  const { error } = await supabase
+    .from('users')
+    .update({
+      password: hashedPassword,
+    })
+    .eq('user_id', id);
+
+  if (error) {
+    return { message: 'Failed to change password' };
+  }
+
+  return { message: 'Password changed successfully' };
 };

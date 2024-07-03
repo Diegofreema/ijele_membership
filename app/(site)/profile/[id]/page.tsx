@@ -12,7 +12,7 @@ const page = async (props: Props) => {
   const id = cookies().get('id')?.value;
   if (!id) redirect('/sign-in');
   const user = await getProfile(id);
-  console.log(user);
+
   return (
     <Wrapper>
       <EditForm user={user} />
