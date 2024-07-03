@@ -70,7 +70,7 @@ export const LoginForm = ({}: Props): JSX.Element => {
     } catch (error) {}
   };
   return (
-    <Flex mt={{ base: 150, md: 50 }}>
+    <Flex mt={{ base: 150, md: 100 }}>
       <Flex
         width={{ base: '90%', md: '70%', lg: '50%' }}
         mx="auto"
