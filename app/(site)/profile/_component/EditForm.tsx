@@ -49,7 +49,7 @@ export const EditForm = ({ user }: Props): JSX.Element => {
       dateOfBirth: '',
       phoneNumber: '',
       salutation: '',
-      title: '',
+
       img_url: '',
     },
     resolver: zodResolver(updateSchema),
@@ -63,7 +63,6 @@ export const EditForm = ({ user }: Props): JSX.Element => {
       setValue('lastName', user?.last_name);
       setValue('img_url', user?.img_url || '');
       setValue('salutation', user?.salutation || '');
-      setValue('title', user?.title || '');
       setValue('dateOfBirth', user?.dateOfBirth || '');
       setValue('phoneNumber', user?.phoneNumber || '');
     }
@@ -82,7 +81,6 @@ export const EditForm = ({ user }: Props): JSX.Element => {
           middle_name: data.middleName || '',
           salutation: data.salutation,
           img_url: data.img_url || '',
-          title: data.title || '',
           dateOfBirth: data.dateOfBirth || '',
           phoneNumber: data.phoneNumber,
         },
@@ -272,20 +270,6 @@ export const EditForm = ({ user }: Props): JSX.Element => {
               name={'middleName'}
               placeholder="Enter your middle name"
             />
-            {/* <ValidateInput
-              label="Password"
-              control={control}
-              errors={errors}
-              name={'password'}
-              placeholder="Enter a password"
-            />
-            <ValidateInput
-              label="Confirm password"
-              control={control}
-              errors={errors}
-              name={'confirmPassword'}
-              placeholder="Confirm your password"
-            /> */}
           </Box>
           <Box display={'flex'} flexDir={'column'} gap={5} mt={5}>
             <ValidateInput
@@ -296,13 +280,6 @@ export const EditForm = ({ user }: Props): JSX.Element => {
               placeholder="Enter your phone number"
             />
             <ValidateInput
-              label="Title"
-              control={control}
-              errors={errors}
-              name={'title'}
-              placeholder="Enter your title"
-            />
-            <ValidateInput
               label="Salutation"
               control={control}
               errors={errors}
@@ -311,15 +288,6 @@ export const EditForm = ({ user }: Props): JSX.Element => {
               name={'salutation'}
               placeholder="Select a salutation"
             />
-            {/* <ValidateInput
-              label="Gender"
-              control={control}
-              errors={errors}
-              type="select"
-              data={['Male', 'Female']}
-              name={'gender'}
-              placeholder="Select a Gender"
-            /> */}
             <ValidateInput
               label="Date of birth"
               control={control}

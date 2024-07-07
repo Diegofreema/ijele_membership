@@ -79,7 +79,7 @@ export const Membership = ({}: Props) => {
           ))}
         </SimpleGrid>
         <SimpleGrid
-          columns={{ base: 1, md: 2 }}
+          columns={{ base: 1, md: 3 }}
           mt={{ base: 5, md: 10 }}
           gap={{ base: 5, md: 10 }}
           pb={10}

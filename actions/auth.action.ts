@@ -6,13 +6,11 @@ import {
   hashPasswordBcrypt,
   verifyPasswordBcrypt,
 } from '@/lib/helper';
-import { MemberType, RegisterMemberType, TypeEnums, UpdateType } from '@/types';
+import { RegisterMemberType, TypeEnums, UpdateType } from '@/types';
 import { createClient } from '@/utils/supabase/server';
 import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import { Resend } from 'resend';
-import { z } from 'zod';
-import { updateSchema } from '@/utils/validator';
 import { revalidatePath } from 'next/cache';
 import ResetPassword from '@/emails/ResetPassword';
 const resend = new Resend(process.env.RESEND_KEY);

@@ -57,7 +57,7 @@ export const registerSchema = z
     dateOfBirth: z
       .string()
       .min(1, { message: 'Please enter your date of birth' }),
-    title: z.string().optional(),
+
     salutation: z.string(),
     gender: z.string().min(1, { message: 'Please select your gender' }),
     img_url: z.string().min(1, { message: 'Please select an image' }),
@@ -84,7 +84,7 @@ export const updateSchema = z.object({
   dateOfBirth: z
     .string()
     .min(1, { message: 'Please enter your date of birth' }),
-  title: z.string().optional(),
+
   salutation: z.string(),
 
   img_url: z.string().min(1, { message: 'Please select an image' }),

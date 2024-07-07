@@ -87,7 +87,7 @@ export const Footer = ({}: Props) => {
       <SimpleGrid
         columns={{ base: 2, md: 5 }}
         gap={5}
-        width={{ base: '80%', md: '90%' }}
+        width={{ base: '90%', md: '70%' }}
         mx={'auto'}
       >
         {links.map((link) => (
@@ -153,7 +153,14 @@ const FooterLinks = () => {
   const color = useColorModeValue('white', 'white');
 
   return (
-    <Flex gap={5} justifyContent={'center'} mt={5} pb={{ base: 20, md: 50 }}>
+    <Flex
+      gap={5}
+      mt={5}
+      justifyContent={'flex-start'}
+      pb={{ base: 20, md: 50 }}
+      width={{ base: '90%', md: '70%' }}
+      mx="auto"
+    >
       {socialLinks.map(({ href, icon: CustomIcon }) => (
         <Link href={href} key={href} target="_blank">
           <IconButton

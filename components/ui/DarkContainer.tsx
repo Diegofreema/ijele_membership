@@ -35,7 +35,7 @@ export const DarkContainer = ({ children, height, hiddenBelow }: Props) => {
       hideBelow={hiddenBelow}
       minH={height}
       bg={bg}
-      pt={{ base: '50px', md: '100px' }}
+      pt={{ md: '100px' }}
       display={'flex'}
       flexDir={'column'}
       alignItems={'center'}

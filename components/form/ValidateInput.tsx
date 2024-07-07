@@ -14,6 +14,8 @@ type Props = {
   type?: HTMLInputTypeAttribute;
   label: string;
   data?: string[];
+  password?: boolean;
+  handleState?: () => void;
 };
 
 export const ValidateInput = ({
@@ -24,6 +26,8 @@ export const ValidateInput = ({
   type,
   label,
   data,
+  password,
+  handleState,
 }: Props): JSX.Element => {
   return (
     <>
@@ -39,6 +43,8 @@ export const ValidateInput = ({
             type={type}
             placeholder={placeholder}
             data={data}
+            password={password}
+            handleState={handleState}
           />
         )}
       />

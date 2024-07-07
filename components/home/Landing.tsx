@@ -51,7 +51,9 @@ const CaptionText = () => {
       position={'absolute'}
       zIndex={10}
       top={'30%'}
-      left={{ base: 4, md: 20 }}
+      left={{ base: 4, md: 150 }}
+      width={{ base: '100%', md: '80%' }}
+      mx="auto"
     >
       <Heading
         fontSize={{ base: '3xl', md: '7xl' }}

@@ -162,9 +162,6 @@ const AuthButtons = () => {
       <Link href="/sign-in">
         <CustomButton text="Login" />
       </Link>
-      <Link href="/sign-up">
-        <CustomButton text="Register" bg={colors.brown} />
-      </Link>
     </Flex>
   );
 };

@@ -30,7 +30,22 @@ export const RegisterForm = ({}: Props): JSX.Element => {
   const supabase = createClient();
   const inputRef = useRef<HTMLInputElement>(null);
   const [uploading, setUploading] = useState(false);
-
+  const [state, setState] = useState('password');
+  const [state2, setState2] = useState('password');
+  const handleType = () => {
+    if (state === 'password') {
+      setState('text');
+    } else if (state === 'text') {
+      setState('password');
+    }
+  };
+  const handleType2 = () => {
+    if (state2 === 'password') {
+      setState2('text');
+    } else if (state2 === 'text') {
+      setState2('password');
+    }
+  };
   const toast = useToast();
   const {
     control,
@@ -50,13 +65,12 @@ export const RegisterForm = ({}: Props): JSX.Element => {
       dateOfBirth: '',
       phoneNumber: '',
       salutation: '',
-      title: '',
+
       img_url: '',
     },
     resolver: zodResolver(registerSchema),
   });
   const { img_url, dateOfBirth } = watch();
-  console.log(dateOfBirth);
 
   const onOpenPicker = () => {
     if (!inputRef.current) return;
@@ -72,7 +86,6 @@ export const RegisterForm = ({}: Props): JSX.Element => {
         middle_name: data.middleName || '',
         salutation: data.salutation,
         img_url: data.img_url || '',
-        title: data.title || '',
         dateOfBirth: data.dateOfBirth || '',
         gender: data.gender || '',
         phoneNumber: data.phoneNumber,
@@ -275,13 +288,9 @@ export const RegisterForm = ({}: Props): JSX.Element => {
               errors={errors}
               name={'password'}
               placeholder="Enter a password"
-            />
-            <ValidateInput
-              label="Confirm password"
-              control={control}
-              errors={errors}
-              name={'confirmPassword'}
-              placeholder="Confirm your password"
+              password
+              type={state}
+              handleState={handleType}
             />
           </Box>
           <Box display={'flex'} flexDir={'column'} gap={5} mt={5}>
@@ -292,13 +301,7 @@ export const RegisterForm = ({}: Props): JSX.Element => {
               name={'phoneNumber'}
               placeholder="Enter your phone number"
             />
-            <ValidateInput
-              label="Title"
-              control={control}
-              errors={errors}
-              name={'title'}
-              placeholder="Enter your title"
-            />
+
             <ValidateInput
               label="Salutation"
               control={control}
@@ -324,6 +327,16 @@ export const RegisterForm = ({}: Props): JSX.Element => {
               type={'date'}
               name={'dateOfBirth'}
               placeholder="Select a date"
+            />
+            <ValidateInput
+              label="Confirm password"
+              control={control}
+              errors={errors}
+              name={'confirmPassword'}
+              placeholder="Confirm your password"
+              password
+              type={state2}
+              handleState={handleType2}
             />
           </Box>
         </SimpleGrid>

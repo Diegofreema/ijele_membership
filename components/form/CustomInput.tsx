@@ -1,16 +1,29 @@
 'use client';
-import { Flex, Input, InputProps, Select } from '@chakra-ui/react';
+import {
+  Flex,
+  IconButton,
+  Input,
+  InputGroup,
+  InputProps,
+  InputRightElement,
+  Select,
+} from '@chakra-ui/react';
+import { Eye, EyeOff } from 'lucide-react';
 
 type Props = InputProps & {
   label: string;
   id: string;
   data?: string[];
+  password?: boolean;
+  handleState?: () => void;
 };
 
 export const CustomInput = ({
   id,
   label,
   data,
+  password,
+  handleState,
   ...props
 }: Props): JSX.Element => {
   const { onChange, value } = props;
@@ -23,14 +36,34 @@ export const CustomInput = ({
         {label}
       </label>
       {props.type !== 'select' && (
-        <Input
-          {...props}
-          borderColor={'#eee'}
-          color="black"
-          _hover={{
-            borderColor: 'black',
-          }}
-        />
+        <InputGroup>
+          <Input
+            {...props}
+            borderColor={'#eee'}
+            color="black"
+            _hover={{
+              borderColor: 'black',
+            }}
+          />
+          {password && (
+            <InputRightElement onClick={handleState} cursor={'pointer'}>
+              {props.type === 'text' && (
+                <IconButton
+                  aria-label="icon"
+                  bg="transparent"
+                  icon={<Eye color="black" />}
+                />
+              )}
+              {props.type === 'password' && (
+                <IconButton
+                  aria-label="icon"
+                  bg="transparent"
+                  icon={<EyeOff color="black" />}
+                />
+              )}
+            </InputRightElement>
+          )}
+        </InputGroup>
       )}
 
       {props.type === 'select' && (
