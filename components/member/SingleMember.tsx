@@ -42,7 +42,7 @@ const packages = [
     ],
     type: 'annual',
     fee: 25000,
-    img: '/year.png',
+    img: '/y.png',
   },
   {
     packageName: 'Life Membership',
@@ -56,7 +56,7 @@ const packages = [
     ],
     type: 'life',
     fee: 175000,
-    img: '/life.png',
+    img: '/l.png',
   },
 
   {

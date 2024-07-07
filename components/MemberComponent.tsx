@@ -34,7 +34,7 @@ const packages = [
       'Priority booking for events and programs',
     ],
     link: '/membership/member?membership=annual',
-    img: '/year.png',
+    img: '/y.png',
   },
   {
     packageName: 'Life Membership',
@@ -44,7 +44,7 @@ const packages = [
       'Special recognition in club publications',
     ],
     link: '/membership/member?membership=life',
-    img: '/life.png',
+    img: '/l.png',
   },
 
   {

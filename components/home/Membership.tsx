@@ -1,9 +1,8 @@
 'use client';
-import { Box, Card, Flex, Image, SimpleGrid, Text } from '@chakra-ui/react';
+import { Card, Flex, Image, SimpleGrid, Text } from '@chakra-ui/react';
 import { Wrapper } from '../Wrapper';
-import { CustomHeading, CustomText } from '../ui/typography';
+import { CustomHeading } from '../ui/typography';
 import { Link } from 'next-view-transitions';
-import { CustomButton } from '../form/CustomButton';
 import { LightContainer } from '../ui/LightContainer';
 import { colors } from '@/constant';
 
@@ -16,12 +15,12 @@ const members = [
   {
     title: 'Annual Membership',
     link: '/membership/member?membership=annual',
-    img: '/year.png',
+    img: '/y.png',
   },
   {
     title: 'Life Membership',
     link: '/membership/member?membership=life',
-    img: '/life.png',
+    img: '/l.png',
   },
   {
     title: 'Honorary Board Membership',

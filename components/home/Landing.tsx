@@ -6,12 +6,10 @@ import { motion } from 'framer-motion';
 import { Link } from 'next-view-transitions';
 import { colors } from '@/constant';
 
-interface Props {}
-
-export const Landing = ({}: Props) => {
+export const Landing = () => {
   return (
     <Box className="w-screen h-screen overflow-hidden relative">
-      <Box width={'100%'} height={'100%'}>
+      <Box width={'100%'} height={'100%'} position={'relative'}>
         <Image
           src="/hero.png"
           alt="image"

@@ -29,9 +29,9 @@ export const ProfileCard = ({ user }: Props): JSX.Element => {
   };
   const url =
     user.type === 'annual'
-      ? '/year.png'
+      ? '/y.png'
       : user.type === 'life'
-      ? '/life.png'
+      ? '/l.png'
       : user.type === 'honorary-board-membership'
       ? '/board.png'
       : '/president.png';
