@@ -27,7 +27,7 @@ interface Props {
 export const links = [
   {
     href: '/profile',
-    label: 'My Profile',
+    label: 'Profile',
   },
   {
     href: '/membership',
@@ -79,14 +79,30 @@ export const Header = ({ id: userId }: Props) => {
             objectFit={'contain'}
           />
         </Link>
-        <Links />
+
         <Flex alignItems={'center'} gap={5} hideBelow={'md'}>
+          <Links />
           {userId ? (
-            <CustomButton text="Log out" onClick={onLogOut} />
+            <CustomButton
+              color="white"
+              bg="transparent"
+              text="Log out"
+              onClick={onLogOut}
+            />
           ) : (
             <AuthButtons />
           )}
-          <ToggleDarkMode />
+          <Link href="/membership">
+            <Button
+              bg={colors.brown}
+              color={'black'}
+              width={'fit-content'}
+              px={10}
+              borderRadius={10}
+            >
+              Join as a Member
+            </Button>
+          </Link>
         </Flex>
         <MobileDrawer isOpen={isOpen} onClose={onClose} />
         <IconButton
@@ -160,7 +176,14 @@ const AuthButtons = () => {
   return (
     <Flex gap={2} hideBelow={'md'}>
       <Link href="/sign-in">
-        <CustomButton text="Login" />
+        <Text
+          className="group-hover:text-[#8ad5e7] transition duration-150 group-hover:-translate-y-1"
+          fontFamily={'var(--font-rubik)'}
+          textColor={'white'}
+          fontWeight={'bold'}
+        >
+          Login
+        </Text>
       </Link>
     </Flex>
   );

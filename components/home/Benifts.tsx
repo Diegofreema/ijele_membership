@@ -27,7 +27,7 @@ export const Benefits = ({}: Props) => {
     <DarkContainer>
       <Wrapper>
         <SimpleGrid columns={{ base: 1, md: 2 }} gap={{ base: 5, md: 10 }}>
-          <CustomHeading text={'Benefits'} />
+          <CustomHeading text={'Benefits'} textColor="black" />
           <Right />
         </SimpleGrid>
       </Wrapper>
@@ -42,10 +42,11 @@ const Right = () => {
         text="To achieve our vision and support our growth, we offer a variety of membership packages designed to provide exclusive benefits and privileges,please check them below."
         mb={5}
         fontSize={{ base: 15, md: 20 }}
+        textColor={'black'}
       />
       <UnorderedList>
         {texts.map((t, i) => (
-          <ListItem key={i} fontSize={{ base: 11, md: 13 }} textColor={'white'}>
+          <ListItem key={i} fontSize={{ base: 11, md: 13 }} textColor={'black'}>
             {t}
           </ListItem>
         ))}

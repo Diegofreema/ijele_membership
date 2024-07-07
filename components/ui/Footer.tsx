@@ -164,9 +164,9 @@ const FooterLinks = () => {
       {socialLinks.map(({ href, icon: CustomIcon }) => (
         <Link href={href} key={href} target="_blank">
           <IconButton
+            bg="transparent"
             aria-label="icon"
-            bg={bg}
-            color={colors.darkBlue}
+            color={'white'}
             icon={<Icon as={CustomIcon} boxSize={5} />}
           />
         </Link>

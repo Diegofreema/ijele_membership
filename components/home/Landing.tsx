@@ -75,11 +75,11 @@ const CaptionText = () => {
 
       <Link href="/membership">
         <Button
-          bg={colors.darkBlue}
-          color={'white'}
+          bg={colors.brown}
+          color={'black'}
           width={'fit-content'}
           px={10}
-          borderRadius={50}
+          borderRadius={10}
         >
           Join as a Member
         </Button>
