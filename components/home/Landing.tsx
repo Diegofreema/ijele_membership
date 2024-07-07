@@ -9,17 +9,19 @@ import { colors } from '@/constant';
 export const Landing = () => {
   return (
     <Box className="w-screen h-screen overflow-hidden relative">
-      <Box width={'100%'} height={'100%'} position={'relative'}>
-        <Image
-          src="/hero.png"
-          alt="image"
-          width={'100%'}
-          height="100%"
-          objectFit={'cover'}
-        />
+      <Box
+        width={'100%'}
+        height={'100%'}
+        position={'relative'}
+        display={'flex'}
+        backgroundImage={'url(/hero.png)'}
+        backgroundRepeat={'no-repeat'}
+        backgroundPosition={'center'}
+        backgroundSize={'cover'}
+        alignItems={'center'}
+      >
+        <CaptionText />
       </Box>
-
-      <CaptionText />
     </Box>
   );
 };
@@ -37,12 +39,10 @@ const CaptionText = () => {
       viewport={{ once: true }}
       flexDir={'column'}
       gap={3}
-      position={'absolute'}
-      zIndex={10}
-      top={'30%'}
-      left={{ base: 4, md: 150 }}
-      width={{ base: '100%', md: '80%' }}
+      zIndex={20}
+      width={{ base: '90%', md: '80%' }}
       mx="auto"
+      mb={50}
     >
       <Heading
         fontSize={{ base: '3xl', md: '7xl' }}

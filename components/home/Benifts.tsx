@@ -26,7 +26,11 @@ export const Benefits = ({}: Props) => {
   return (
     <DarkContainer>
       <Wrapper>
-        <SimpleGrid columns={{ base: 1, md: 2 }} gap={{ base: 5, md: 10 }}>
+        <SimpleGrid
+          columns={{ base: 1, md: 2 }}
+          gap={{ base: 5, md: 10 }}
+          pt={{ base: 50, md: 100 }}
+        >
           <CustomHeading text={'Benefits'} textColor="black" />
           <Right />
         </SimpleGrid>
@@ -46,7 +50,7 @@ const Right = () => {
       />
       <UnorderedList>
         {texts.map((t, i) => (
-          <ListItem key={i} fontSize={{ base: 11, md: 13 }} textColor={'black'}>
+          <ListItem key={i} fontSize={{ base: 13, md: 15 }} textColor={'black'}>
             {t}
           </ListItem>
         ))}

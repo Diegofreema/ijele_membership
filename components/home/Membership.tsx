@@ -52,7 +52,7 @@ export const Membership = ({}: Props) => {
                 <Image
                   alt="img"
                   width={200}
-                  height={200}
+                  height={{ base: 150, md: 200 }}
                   src={member.img}
                   objectFit={'contain'}
                 />
@@ -97,7 +97,7 @@ export const Membership = ({}: Props) => {
                 <Image
                   alt="img"
                   width={200}
-                  height={200}
+                  height={{ base: 150, md: 200 }}
                   src={member.img}
                   objectFit={'contain'}
                 />
