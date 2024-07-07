@@ -13,7 +13,7 @@ export const Landing = ({}: Props) => {
     <Box className="w-screen h-screen overflow-hidden relative">
       <Box width={'100%'} height={'100%'}>
         <Image
-          src="/slide.jpeg"
+          src="/hero.png"
           alt="image"
           width={'100%'}
           height="100%"
