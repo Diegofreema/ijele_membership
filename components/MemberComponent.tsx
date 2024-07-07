@@ -34,6 +34,7 @@ const packages = [
       'Priority booking for events and programs',
     ],
     link: '/membership/member?membership=annual',
+    img: '/year.png',
   },
   {
     packageName: 'Life Membership',
@@ -43,6 +44,7 @@ const packages = [
       'Special recognition in club publications',
     ],
     link: '/membership/member?membership=life',
+    img: '/life.png',
   },
 
   {
@@ -54,16 +56,18 @@ const packages = [
       'Special acknowledgment on our honorary board',
     ],
     link: '/membership/member?membership=honorary-board-membership',
+    img: '/board.png',
   },
   {
     packageName: 'Honorary President',
-    price: 'N5 million (valid for 3 years)',
+    price: 'N5 million (valid for 2 years)',
     benefits: [
       'Prestigious title of Honorary President',
       ' Leadership role in club initiatives',
       'Comprehensive VIP benefits and high-profile recognition',
     ],
     link: '/membership/member?membership=honorary-president',
+    img: '/president.png',
   },
 ];
 
@@ -141,12 +145,19 @@ type PackageProps = {
   benefits: string[];
   price: string;
   link: string;
+  img?: string;
 };
 
-const PremiumCards = ({ packageName, benefits, price, link }: PackageProps) => {
+const PremiumCards = ({
+  packageName,
+  benefits,
+  price,
+  link,
+  img,
+}: PackageProps) => {
   return (
     <SimpleGrid columns={{ base: 1, md: 2 }} gap={{ base: 5, md: 10 }}>
-      <PremiumCard packageName={packageName} price={price} />
+      <PremiumCard packageName={packageName} price={price} img={img} />
       <Benefits benefits={benefits} link={link} />
     </SimpleGrid>
   );
@@ -155,9 +166,11 @@ const PremiumCards = ({ packageName, benefits, price, link }: PackageProps) => {
 const PremiumCard = ({
   packageName,
   price,
+  img,
 }: {
   packageName: string;
   price: string;
+  img?: string;
 }) => {
   const bg = useColorModeValue(colors.darkBlue, colors.dark);
   const color = useColorModeValue(colors.dark, 'white');
@@ -180,13 +193,15 @@ const PremiumCard = ({
         alignItems={'center'}
         gap={5}
       >
-        <Image
-          alt="logo"
-          src="/logo.png"
-          width={50}
-          height={50}
-          objectFit={'contain'}
-        />
+        {img && (
+          <Image
+            alt="logo"
+            src={img}
+            width={200}
+            height={200}
+            objectFit={'contain'}
+          />
+        )}
         <Heading textColor={'white'} size={{ base: 'base', md: '"md"' }}>
           {packageName}
         </Heading>
@@ -212,6 +227,7 @@ const Benefits = ({ benefits, link }: { benefits: string[]; link: string }) => {
       }}
       display={'flex'}
       flexDir={'column'}
+      justifyContent={'center'}
       gap={5}
       viewport={{ once: true }}
     >

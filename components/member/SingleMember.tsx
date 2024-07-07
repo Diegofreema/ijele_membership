@@ -42,6 +42,7 @@ const packages = [
     ],
     type: 'annual',
     fee: 25000,
+    img: '/year.png',
   },
   {
     packageName: 'Life Membership',
@@ -55,6 +56,7 @@ const packages = [
     ],
     type: 'life',
     fee: 175000,
+    img: '/life.png',
   },
 
   {
@@ -70,10 +72,11 @@ const packages = [
     ],
     type: 'honorary-board-membership',
     fee: 3000000,
+    img: '/board.png',
   },
   {
     packageName: 'Honorary President',
-    price: 'N5 million (valid for 3 years)',
+    price: 'N5 million (valid for 2 years)',
     benefits: [
       'Prestigious title of Honorary President',
       ' Leadership role in club initiatives',
@@ -84,6 +87,7 @@ const packages = [
     ],
     type: 'honorary-president',
     fee: 5000000,
+    img: '/president.png',
   },
 ];
 
@@ -149,7 +153,7 @@ export const SingleMember = ({ user }: { user: MemberType }) => {
 
   return (
     <Flex
-      py={{ base: 100, md: 50 }}
+      py={{ base: 120, md: 150 }}
       minHeight={'100vh'}
       alignItems={'center'}
       justifyContent={'center'}
@@ -160,7 +164,10 @@ export const SingleMember = ({ user }: { user: MemberType }) => {
         columns={{ base: 1, md: 2 }}
         gap={{ base: 5, md: 10 }}
       >
-        <PremiumCard packageName={singleMember?.packageName!} />
+        <PremiumCard
+          packageName={singleMember?.packageName!}
+          img={singleMember?.img}
+        />
         <Box
           as={motion.div}
           initial={{ opacity: 0, x: 50 }}
@@ -240,7 +247,13 @@ export const SingleMember = ({ user }: { user: MemberType }) => {
   );
 };
 
-const PremiumCard = ({ packageName }: { packageName: string }) => {
+const PremiumCard = ({
+  packageName,
+  img,
+}: {
+  packageName: string;
+  img?: string;
+}) => {
   const bg = useColorModeValue(colors.darkBlue, colors.dark);
   const color = useColorModeValue(colors.dark, 'white');
   return (
@@ -262,13 +275,15 @@ const PremiumCard = ({ packageName }: { packageName: string }) => {
         alignItems={'center'}
         gap={5}
       >
-        <Image
-          alt="logo"
-          src="/logo.png"
-          width={50}
-          height={50}
-          objectFit={'contain'}
-        />
+        {img && (
+          <Image
+            alt="logo"
+            src={img}
+            width={200}
+            height={200}
+            objectFit={'contain'}
+          />
+        )}
         <Heading textColor={'white'} size={{ base: 'base', md: '"md"' }}>
           {packageName}
         </Heading>
