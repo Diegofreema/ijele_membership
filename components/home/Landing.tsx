@@ -14,7 +14,7 @@ export const Landing = () => {
         height={'100%'}
         position={'relative'}
         display={'flex'}
-        backgroundImage={'url(/hero.png)'}
+        backgroundImage={'url(/b.png)'}
         backgroundRepeat={'no-repeat'}
         backgroundPosition={'center'}
         backgroundSize={'cover'}
