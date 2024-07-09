@@ -8,6 +8,7 @@ import { Header } from '@/components/Header';
 import { ViewTransitions } from 'next-view-transitions';
 import { Footer } from '@/components/ui/Footer';
 import { cookies } from 'next/headers';
+import GoogleCaptchaWrapper from '@/components/GoogleWrapper';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -28,13 +29,15 @@ export default function RootLayout({
         <body
           className={cn('min-h-screen', inter.className, fonts.rubik.variable)}
         >
-          <Provider>
-            <div className="bg-white min-h-screen overflow-x-hidden">
-              <Header id={id} />
-              {children}
-              <Footer />
-            </div>
-          </Provider>
+          <GoogleCaptchaWrapper>
+            <Provider>
+              <div className="bg-white min-h-screen overflow-x-hidden">
+                <Header id={id} />
+                {children}
+                <Footer />
+              </div>
+            </Provider>
+          </GoogleCaptchaWrapper>
         </body>
       </html>
     </ViewTransitions>

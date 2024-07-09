@@ -24,11 +24,14 @@ import { Link } from 'next-view-transitions';
 import { ChangeEventHandler, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import axios from 'axios';
 type Props = {};
 
 export const RegisterForm = ({}: Props): JSX.Element => {
   const supabase = createClient();
   const inputRef = useRef<HTMLInputElement>(null);
+  const { executeRecaptcha } = useGoogleReCaptcha();
   const [uploading, setUploading] = useState(false);
   const [state, setState] = useState('password');
   const [state2, setState2] = useState('password');
@@ -77,6 +80,42 @@ export const RegisterForm = ({}: Props): JSX.Element => {
     inputRef.current.click();
   };
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
+    if (!executeRecaptcha) {
+      console.log('Execute recaptcha not yet available');
+      return;
+    }
+
+    const token = await executeRecaptcha('submit');
+    const response = await axios({
+      method: 'post',
+      url: '/api/recaptcha',
+      data: {
+        token,
+      },
+      headers: {
+        Accept: 'application/json, text/plain, */*',
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response?.data?.success === true) {
+      console.log(`Success with score: ${response?.data?.score}`);
+      toast({
+        title: 'Success',
+        description: 'ReCaptcha Verified and Form Submitted!',
+        position: 'top-right',
+        status: 'success',
+      });
+    } else {
+      console.log(`Failure with score: ${response?.data?.score}`);
+      toast({
+        title: 'Error',
+        description: 'Failed to verify recaptcha! You must be a robot!',
+        status: 'error',
+        position: 'top-right',
+      });
+      return;
+    }
     try {
       const res = await register({
         email: data.email,
