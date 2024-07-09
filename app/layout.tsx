@@ -9,6 +9,7 @@ import { ViewTransitions } from 'next-view-transitions';
 import { Footer } from '@/components/ui/Footer';
 import { cookies } from 'next/headers';
 import GoogleCaptchaWrapper from '@/components/GoogleWrapper';
+import { DrawerExample } from '@/components/CookieDrawer';
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -34,6 +35,7 @@ export default function RootLayout({
               <div className="bg-white min-h-screen overflow-x-hidden">
                 <Header id={id} />
                 {children}
+                <DrawerExample />
                 <Footer />
               </div>
             </Provider>
