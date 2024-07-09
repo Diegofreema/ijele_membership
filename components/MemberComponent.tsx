@@ -82,6 +82,7 @@ export const Member = (): JSX.Element => {
           display={'flex'}
           flexDirection={'column'}
           gap={{ base: 5, md: 10 }}
+          pt={{ base: 100 }}
         >
           {packages.map((pkg, i) => (
             <PremiumCards key={i} {...pkg} />

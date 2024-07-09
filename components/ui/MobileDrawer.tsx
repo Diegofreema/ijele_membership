@@ -2,7 +2,6 @@ import {
   Drawer,
   DrawerBody,
   DrawerFooter,
-  DrawerHeader,
   DrawerOverlay,
   DrawerContent,
   DrawerCloseButton,
@@ -10,21 +9,23 @@ import {
   Text,
   Flex,
   Button,
-  Box,
   useColorMode,
 } from '@chakra-ui/react';
-import { Links, ToggleDarkMode, links } from '../Header';
+import { AuthButtons, links } from '../Header';
 import { Link } from 'next-view-transitions';
 import { Moon, Sun } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import { colors } from '@/constant';
+import { CustomButton } from '../form/CustomButton';
 
 type Props = {
   isOpen: boolean;
   onClose: () => void;
+  onLogOut: () => void;
+  userId: string | undefined;
 };
 
-export function MobileDrawer({ isOpen, onClose }: Props) {
+export function MobileDrawer({ isOpen, onClose, onLogOut, userId }: Props) {
   const color = useColorModeValue('black', '#fff');
   const bg = useColorModeValue('#fff', '#181818');
   const { colorMode, toggleColorMode } = useColorMode();
@@ -59,6 +60,16 @@ export function MobileDrawer({ isOpen, onClose }: Props) {
         </DrawerBody>
 
         <DrawerFooter>
+          {userId ? (
+            <CustomButton
+              textColor="black"
+              bg="transparent"
+              text="Log out"
+              onClick={onLogOut}
+            />
+          ) : (
+            <AuthButtons black />
+          )}
           <Button
             borderRadius={50}
             width={50}

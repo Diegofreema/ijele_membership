@@ -33,10 +33,10 @@ export const links = [
     href: '/membership',
     label: 'Membership',
   },
-  {
-    href: '/members',
-    label: 'Notable Members',
-  },
+  // {
+  //   href: '/members',
+  //   label: 'Notable Members',
+  // },
 ];
 export const Header = ({ id: userId }: Props) => {
   const bg = useColorModeValue(colors.darkBlue, '#181818');
@@ -104,7 +104,12 @@ export const Header = ({ id: userId }: Props) => {
             </Button>
           </Link>
         </Flex>
-        <MobileDrawer isOpen={isOpen} onClose={onClose} />
+        <MobileDrawer
+          userId={userId}
+          onLogOut={onLogOut}
+          isOpen={isOpen}
+          onClose={onClose}
+        />
         <IconButton
           hideFrom="md"
           onClick={onOpen}
@@ -172,14 +177,15 @@ export const ToggleDarkMode = () => {
   );
 };
 
-const AuthButtons = () => {
+export const AuthButtons = ({ black }: { black?: boolean }) => {
+  const color = black ? 'black' : 'white';
   return (
     <Flex gap={2} hideBelow={'md'}>
       <Link href="/sign-in">
         <Text
           className="group-hover:text-[#8ad5e7] transition duration-150 group-hover:-translate-y-1"
           fontFamily={'var(--font-rubik)'}
-          textColor={'white'}
+          textColor={color}
           fontWeight={'bold'}
         >
           Login

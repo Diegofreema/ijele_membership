@@ -18,7 +18,7 @@ import { Check } from 'lucide-react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 import { useCallback, useMemo } from 'react';
 import { CustomHeading, CustomText } from '../ui/typography';
-import { usePaystackPayment, PaystackConsumer } from 'react-paystack';
+import { PaystackConsumer } from 'react-paystack';
 import { MemberType } from '@/types';
 import { onSub } from '@/actions/auth.action';
 
