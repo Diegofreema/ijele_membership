@@ -26,14 +26,16 @@ type Props = {
 };
 
 export function MobileDrawer({ isOpen, onClose, onLogOut, userId }: Props) {
-  const color = useColorModeValue('black', '#fff');
-  const bg = useColorModeValue('#fff', '#181818');
+  const color = useColorModeValue('white', '#fff');
+  const bg = useColorModeValue(colors.darkBlue, '#181818');
   const { colorMode, toggleColorMode } = useColorMode();
   const pathname = usePathname();
+  console.log(userId);
+
   return (
     <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
       <DrawerOverlay />
-      <DrawerContent bg={bg}>
+      <DrawerContent bg={bg} hideFrom={'md'}>
         <DrawerCloseButton color={color} />
 
         <DrawerBody>
@@ -56,20 +58,29 @@ export function MobileDrawer({ isOpen, onClose, onLogOut, userId }: Props) {
                 </Link>
               );
             })}
+            {userId ? (
+              <CustomButton
+                textColor="black"
+                bg="transparent"
+                text="Log out"
+                onClick={onLogOut}
+              />
+            ) : (
+              <Link href="/sign-in">
+                <Text
+                  className="group-hover:text-[#8ad5e7] transition duration-150 group-hover:-translate-y-1"
+                  fontFamily={'var(--font-rubik)'}
+                  textColor={color}
+                  fontWeight={'bold'}
+                >
+                  Login
+                </Text>
+              </Link>
+            )}
           </Flex>
         </DrawerBody>
 
         <DrawerFooter>
-          {userId ? (
-            <CustomButton
-              textColor="black"
-              bg="transparent"
-              text="Log out"
-              onClick={onLogOut}
-            />
-          ) : (
-            <AuthButtons black />
-          )}
           <Button
             borderRadius={50}
             width={50}
