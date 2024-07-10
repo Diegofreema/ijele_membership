@@ -21,12 +21,16 @@ export function DrawerExample() {
   };
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const accepted = localStorage.getItem('accepted');
-      if (accepted !== 'true') {
-        onOpen();
+    const handleOpen = async () => {
+      new Promise((resolve) => setTimeout(resolve, 2000));
+      if (typeof window !== 'undefined') {
+        const accepted = localStorage.getItem('accepted');
+        if (accepted !== 'true') {
+          onOpen();
+        }
       }
-    }
+    };
+    handleOpen();
   }, [onOpen]);
   return (
     <Drawer isOpen={isOpen} placement="bottom" onClose={onClose}>
