@@ -318,13 +318,13 @@ export const RegisterForm = ({}: Props): JSX.Element => {
             />
 
             <ValidateInput
-              label="Salutation"
+              label="Title"
               control={control}
               errors={errors}
               type="select"
               data={['Mr', 'Mrs', 'Miss']}
-              name={'salutation'}
-              placeholder="Select a salutation"
+              name={'title'}
+              placeholder="Select a title"
             />
             <ValidateInput
               label="Gender"
