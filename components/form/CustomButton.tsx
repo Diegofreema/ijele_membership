@@ -8,7 +8,7 @@ interface Props extends ButtonProps {
 }
 
 export const CustomButton = ({
-  bg = colors.lightBlue,
+  bg = colors.darkBlue,
   text,
   ...props
 }: Props) => {

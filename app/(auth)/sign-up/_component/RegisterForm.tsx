@@ -359,7 +359,7 @@ export const RegisterForm = ({}: Props): JSX.Element => {
           <ReCAPTCHA
             sitekey={process.env.NEXT_PUBLIC_CLI!}
             onChange={setCapCha}
-            className="mx-auto"
+            className="mx-auto mt-4"
           />
         )}
         <Flex width={'100%'} justifyContent={'center'}>
