@@ -85,22 +85,7 @@ export const ProfileCard = ({ user }: Props): JSX.Element => {
                   fontWeight={'bold'}
                 />
               </Flex>
-              {user?.title && (
-                <Flex gap={3}>
-                  <CustomText
-                    text={'title:'}
-                    textColor="black"
-                    fontSize={{ base: 15, md: 18 }}
-                  />
-                  <CustomText
-                    as="h6"
-                    text={user?.title || ''}
-                    textColor="black"
-                    fontSize={{ base: 15, md: 18 }}
-                    fontWeight={'bold'}
-                  />
-                </Flex>
-              )}
+
               <Flex gap={3}>
                 <CustomText text={'Email:'} textColor="black" />
                 <CustomText
