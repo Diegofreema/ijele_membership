@@ -355,13 +355,13 @@ export const RegisterForm = ({}: Props): JSX.Element => {
             />
           </Box>
         </SimpleGrid>
-        {!captCha && (
-          <ReCAPTCHA
-            sitekey={process.env.NEXT_PUBLIC_CLI!}
-            onChange={setCapCha}
-            className="mx-auto mt-4"
-          />
-        )}
+
+        <ReCAPTCHA
+          sitekey={process.env.NEXT_PUBLIC_CLI!}
+          onChange={setCapCha}
+          className="mx-auto mt-4"
+        />
+
         <Flex width={'100%'} justifyContent={'center'}>
           <CustomButton
             text="Sign up"
