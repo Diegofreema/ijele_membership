@@ -25,6 +25,8 @@ import { ChangeEventHandler, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+import ReCAPTCHA from 'react-google-recaptcha';
+
 import axios from 'axios';
 type Props = {};
 
@@ -32,6 +34,7 @@ export const RegisterForm = ({}: Props): JSX.Element => {
   const supabase = createClient();
   const inputRef = useRef<HTMLInputElement>(null);
   const { executeRecaptcha } = useGoogleReCaptcha();
+  const [captCha, setCapCha] = useState<string | null>(null);
   const [uploading, setUploading] = useState(false);
   const [state, setState] = useState('password');
   const [state2, setState2] = useState('password');
@@ -80,34 +83,44 @@ export const RegisterForm = ({}: Props): JSX.Element => {
     inputRef.current.click();
   };
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
-    if (!executeRecaptcha) {
-      console.log('Execute recaptcha not yet available');
-      return;
-    }
+    // if (!executeRecaptcha) {
+    //   console.log('Execute recaptcha not yet available');
+    //   return;
+    // }
 
-    const token = await executeRecaptcha('submit');
-    const response = await axios({
-      method: 'post',
-      url: '/api/recaptcha',
-      data: {
-        token,
-      },
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        'Content-Type': 'application/json',
-      },
-    });
+    // const token = await executeRecaptcha('submit');
+    // const response = await axios({
+    //   method: 'post',
+    //   url: '/api/recaptcha',
+    //   data: {
+    //     token,
+    //   },
+    //   headers: {
+    //     Accept: 'application/json, text/plain, */*',
+    //     'Content-Type': 'application/json',
+    //   },
+    // });
 
-    if (response?.data?.success === true) {
-      console.log(`Success with score: ${response?.data?.score}`);
-      toast({
-        title: 'Success',
-        description: 'ReCaptcha Verified and Form Submitted!',
-        position: 'top-right',
-        status: 'success',
-      });
-    } else {
-      console.log(`Failure with score: ${response?.data?.score}`);
+    // if (response?.data?.success === true) {
+    //   console.log(`Success with score: ${response?.data?.score}`);
+    //   toast({
+    //     title: 'Success',
+    //     description: 'ReCaptcha Verified and Form Submitted!',
+    //     position: 'top-right',
+    //     status: 'success',
+    //   });
+    // } else {
+    //   console.log(`Failure with score: ${response?.data?.score}`);
+    //   toast({
+    //     title: 'Error',
+    //     description: 'Failed to verify recaptcha! You must be a robot!',
+    //     status: 'error',
+    //     position: 'top-right',
+    //   });
+    //   return;
+    // }
+
+    if (!captCha) {
       toast({
         title: 'Error',
         description: 'Failed to verify recaptcha! You must be a robot!',
@@ -379,6 +392,10 @@ export const RegisterForm = ({}: Props): JSX.Element => {
             />
           </Box>
         </SimpleGrid>
+        <ReCAPTCHA
+          sitekey={process.env.NEXT_PUBLIC_CLI_KEY!}
+          onChange={setCapCha}
+        />
         <Flex width={'100%'} justifyContent={'center'}>
           <CustomButton
             text="Sign up"

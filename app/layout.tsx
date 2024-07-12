@@ -30,16 +30,16 @@ export default function RootLayout({
         <body
           className={cn('min-h-screen', inter.className, fonts.rubik.variable)}
         >
-          <GoogleCaptchaWrapper>
-            <Provider>
-              <div className="bg-white min-h-screen overflow-x-hidden">
-                <Header id={id} />
-                {children}
-                <DrawerExample />
-                <Footer />
-              </div>
-            </Provider>
-          </GoogleCaptchaWrapper>
+          {/* <GoogleCaptchaWrapper> */}
+          <Provider>
+            <div className="bg-white min-h-screen overflow-x-hidden">
+              <Header id={id} />
+              {children}
+              <DrawerExample />
+              <Footer />
+            </div>
+          </Provider>
+          {/* </GoogleCaptchaWrapper> */}
         </body>
       </html>
     </ViewTransitions>

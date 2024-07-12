@@ -12,15 +12,19 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { colors } from '../../../../constant';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
+// import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import axios from 'axios';
+import { useState } from 'react';
+import ReCAPTCHA from 'react-google-recaptcha';
 type Props = {};
 
 export const LoginForm = ({}: Props): JSX.Element => {
   const toast = useToast();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { executeRecaptcha } = useGoogleReCaptcha();
+  const [captCha, setCapCha] = useState<string | null>(null);
+
+  // const { executeRecaptcha } = useGoogleReCaptcha();
   const prev = searchParams.get('prev');
   const membership = searchParams.get('membership');
   console.log({ prev, membership });
@@ -40,34 +44,8 @@ export const LoginForm = ({}: Props): JSX.Element => {
 
   const onSubmit = async (data: z.infer<typeof loginSchema>) => {
     console.log(data);
-    if (!executeRecaptcha) {
-      console.log('Execute recaptcha not yet available');
-      return;
-    }
 
-    const token = await executeRecaptcha('submit');
-    const response = await axios({
-      method: 'post',
-      url: '/api/recaptcha',
-      data: {
-        token,
-      },
-      headers: {
-        Accept: 'application/json, text/plain, */*',
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (response?.data?.success === true) {
-      console.log(`Success with score: ${response?.data?.score}`);
-      toast({
-        title: 'Success',
-        description: 'ReCaptcha Verified and Form Submitted!',
-        position: 'top-right',
-        status: 'success',
-      });
-    } else {
-      console.log(`Failure with score: ${response?.data?.score}`);
+    if (!captCha) {
       toast({
         title: 'Error',
         description: 'Failed to verify recaptcha! You must be a robot!',
@@ -76,6 +54,41 @@ export const LoginForm = ({}: Props): JSX.Element => {
       });
       return;
     }
+    // if (!executeRecaptcha) {
+    //   console.log('Execute recaptcha not yet available');
+    //   return;
+    // }
+
+    // const token = await executeRecaptcha('submit');
+    // const response = await axios({
+    //   method: 'post',
+    //   url: '/api/recaptcha',
+    //   data: {
+    //     token,
+    //   },
+    //   headers: {
+    //     Accept: 'application/json, text/plain, */*',
+    //     'Content-Type': 'application/json',
+    //   },
+    // });
+    // if (response?.data?.success === true) {
+    //   console.log(`Success with score: ${response?.data?.score}`);
+    //   toast({
+    //     title: 'Success',
+    //     description: 'ReCaptcha Verified and Form Submitted!',
+    //     position: 'top-right',
+    //     status: 'success',
+    //   });
+    // } else {
+    //   console.log(`Failure with score: ${response?.data?.score}`);
+    //   toast({
+    //     title: 'Error',
+    //     description: 'Failed to verify recaptcha! You must be a robot!',
+    //     status: 'error',
+    //     position: 'top-right',
+    //   });
+    //   return;
+    // }
     try {
       const res = await login(data);
 
@@ -149,6 +162,10 @@ export const LoginForm = ({}: Props): JSX.Element => {
             name={'password'}
             placeholder="Enter your password"
             type={'password'}
+          />
+          <ReCAPTCHA
+            sitekey={process.env.NEXT_PUBLIC_CLI_KEY!}
+            onChange={setCapCha}
           />
           <CustomButton
             text="Login"
