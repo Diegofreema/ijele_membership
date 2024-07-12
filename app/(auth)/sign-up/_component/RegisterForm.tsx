@@ -356,7 +356,7 @@ export const RegisterForm = ({}: Props): JSX.Element => {
           </Box>
         </SimpleGrid>
         <ReCAPTCHA
-          sitekey={process.env.NEXT_PUBLIC_CLI_KEY!}
+          sitekey={process.env.NEXT_PUBLIC_CLI!}
           onChange={setCapCha}
           className="mx-auto"
         />
