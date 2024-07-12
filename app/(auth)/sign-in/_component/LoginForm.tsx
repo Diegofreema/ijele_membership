@@ -166,11 +166,13 @@ export const LoginForm = ({}: Props): JSX.Element => {
           <ReCAPTCHA
             sitekey={process.env.NEXT_PUBLIC_CLI_KEY!}
             onChange={setCapCha}
+            className="mx-auto"
           />
           <CustomButton
             text="Login"
             onClick={handleSubmit(onSubmit)}
             isLoading={isSubmitting}
+            isDisabled={!captCha || isSubmitting}
             bg={colors.darkBlue}
           />
           <Link href="/forgot-password">

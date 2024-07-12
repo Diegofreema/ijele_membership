@@ -83,43 +83,6 @@ export const RegisterForm = ({}: Props): JSX.Element => {
     inputRef.current.click();
   };
   const onSubmit = async (data: z.infer<typeof registerSchema>) => {
-    // if (!executeRecaptcha) {
-    //   console.log('Execute recaptcha not yet available');
-    //   return;
-    // }
-
-    // const token = await executeRecaptcha('submit');
-    // const response = await axios({
-    //   method: 'post',
-    //   url: '/api/recaptcha',
-    //   data: {
-    //     token,
-    //   },
-    //   headers: {
-    //     Accept: 'application/json, text/plain, */*',
-    //     'Content-Type': 'application/json',
-    //   },
-    // });
-
-    // if (response?.data?.success === true) {
-    //   console.log(`Success with score: ${response?.data?.score}`);
-    //   toast({
-    //     title: 'Success',
-    //     description: 'ReCaptcha Verified and Form Submitted!',
-    //     position: 'top-right',
-    //     status: 'success',
-    //   });
-    // } else {
-    //   console.log(`Failure with score: ${response?.data?.score}`);
-    //   toast({
-    //     title: 'Error',
-    //     description: 'Failed to verify recaptcha! You must be a robot!',
-    //     status: 'error',
-    //     position: 'top-right',
-    //   });
-    //   return;
-    // }
-
     if (!captCha) {
       toast({
         title: 'Error',
@@ -395,12 +358,14 @@ export const RegisterForm = ({}: Props): JSX.Element => {
         <ReCAPTCHA
           sitekey={process.env.NEXT_PUBLIC_CLI_KEY!}
           onChange={setCapCha}
+          className="mx-auto"
         />
         <Flex width={'100%'} justifyContent={'center'}>
           <CustomButton
             text="Sign up"
             onClick={handleSubmit(onSubmit)}
             isLoading={isSubmitting}
+            isDisabled={!captCha || isSubmitting}
             mt={5}
             width={'250px'}
           />

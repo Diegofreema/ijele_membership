@@ -21,8 +21,9 @@ type Props = {
 };
 
 export const ProfileCard = ({ user }: Props): JSX.Element => {
-  const dateOfBirth = parseISO(user?.dateOfBirth!);
-  const age = format(dateOfBirth, 'dd-MM-yyyy');
+  console.log({ user });
+
+  const age = user?.dateOfBirth;
   const router = useRouter();
   const onPress = () => {
     router.push(`/profile/${user?.user_id}`);
@@ -139,7 +140,7 @@ export const ProfileCard = ({ user }: Props): JSX.Element => {
               <Flex gap={3}>
                 <CustomText text={'Date of birth:'} textColor="black" />
                 <CustomText
-                  text={age}
+                  text={age!}
                   textColor="black"
                   textTransform={'capitalize'}
                   fontWeight={'bold'}
