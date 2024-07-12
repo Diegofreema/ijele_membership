@@ -23,6 +23,7 @@ export async function POST(request: Request, response: Response) {
       }
     );
   } catch (e) {
+    console.log('e', e);
     return NextResponse.json({ success: false });
   }
 
