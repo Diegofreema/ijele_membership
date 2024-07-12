@@ -163,11 +163,13 @@ export const LoginForm = ({}: Props): JSX.Element => {
             placeholder="Enter your password"
             type={'password'}
           />
-          <ReCAPTCHA
-            sitekey={process.env.NEXT_PUBLIC_CLI!}
-            onChange={setCapCha}
-            className="mx-auto"
-          />
+          {!captCha && (
+            <ReCAPTCHA
+              sitekey={process.env.NEXT_PUBLIC_CLI!}
+              onChange={setCapCha}
+              className="mx-auto"
+            />
+          )}
           <CustomButton
             text="Login"
             onClick={handleSubmit(onSubmit)}
