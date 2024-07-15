@@ -5335,6 +5335,11 @@ react-is@^16.13.1, react-is@^16.7.0:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
   integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
 
+react-monnify-ts@^0.0.4:
+  version "0.0.4"
+  resolved "https://registry.yarnpkg.com/react-monnify-ts/-/react-monnify-ts-0.0.4.tgz#7b1ce4d6c6128dbc75051b7dd207ac877c969b23"
+  integrity sha512-TaMI6Ty61QjdcD1k0oJT76qD89o9fjnmJSRydsO80GqMeogtJTybN/ZYN8slJ4+ua5xKGPo6/WYzueLagZR3UA==
+
 react-paystack@^5.0.0:
   version "5.0.0"
   resolved "https://registry.yarnpkg.com/react-paystack/-/react-paystack-5.0.0.tgz#dbe47a7a55098154e7077b3aa917d4a1e19ce345"
@@ -5376,6 +5381,15 @@ react-remove-scroll@^2.5.6:
     tslib "^2.1.0"
     use-callback-ref "^1.3.0"
     use-sidecar "^1.1.2"
+
+react-squadpay@^1.0.8, react-squadpay@^1.0.9:
+  version "1.0.9"
+  resolved "https://registry.yarnpkg.com/react-squadpay/-/react-squadpay-1.0.9.tgz#0d9b34c669bcf3e5662de2778b85c9c9054a55fb"
+  integrity sha512-tPdd+t76BciRE3usW7nmvDi6wAK/mQFy9+ycqF5Ji0sMklCzUONTWz2iz7Z+s6HdiklH0f9FMUb1KJHqyXkdLg==
+  dependencies:
+    react "^18.2.0"
+    react-dom "^18.2.0"
+    react-squadpay "^1.0.8"
 
 react-style-singleton@^2.2.1:
   version "2.2.1"

@@ -212,7 +212,7 @@ export const onSub = async (id: string, type: TypeEnums) => {
     .eq('user_id', id);
 
   if (error) {
-    return { message: 'Failed to complete registration' };
+    return { message: 'failed' };
   }
 
   return { message: 'success' };
