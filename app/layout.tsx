@@ -24,6 +24,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const id = cookies().get('id')?.value;
+
   return (
     <ViewTransitions>
       <html lang="en" suppressHydrationWarning>

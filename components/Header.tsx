@@ -20,6 +20,8 @@ import { colors } from '@/constant';
 import { CustomButton } from './form/CustomButton';
 import { logOut } from '@/actions/auth.action';
 import { MobileDrawer } from './ui/MobileDrawer';
+import { useRef } from 'react';
+import { useMember } from '@/public/hooks/useMember';
 
 interface Props {
   id: string | undefined;
@@ -40,11 +42,15 @@ export const links = [
 ];
 export const Header = ({ id: userId }: Props) => {
   const bg = useColorModeValue(colors.darkBlue, '#181818');
+  const { isMember } = useMember({ id: userId });
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const onLogOut = async () => {
     await logOut();
   };
+
+  const buttonText =
+    isMember === null ? ' Join as a Member' : 'Upgrade Membership';
   return (
     <Box
       as={motion.div}
@@ -100,7 +106,7 @@ export const Header = ({ id: userId }: Props) => {
               px={10}
               borderRadius={10}
             >
-              Join as a Member
+              {buttonText}
             </Button>
           </Link>
         </Flex>

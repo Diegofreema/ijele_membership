@@ -20,11 +20,11 @@ import { useMemo } from 'react';
 import { CustomHeading, CustomText } from '../ui/typography';
 import { MemberType } from '@/types';
 import { onSub } from '@/actions/auth.action';
-
+// @ts-ignore
 import {
   CompleteResponesProps,
   MonnifyProps,
-  PayWIthMonnifyPayment,
+  usePayWithMonnifyPayment,
   UserCancelledResponseProps,
 } from 'react-monnify-ts';
 const packages = [
@@ -108,83 +108,81 @@ export const SingleMember = ({ user }: { user: MemberType }) => {
     [memberships]
   );
 
+  const onLoadStart = () => {
+    console.log('loading has started');
+  };
+  const onLoadComplete = () => {
+    console.log('SDK is UP');
+  };
+
+  const onComplete = (res: CompleteResponesProps) => {
+    //Implement what happens when the transaction is completed.
+    console.log('response', res);
+    // @ts-ignore
+    onSub(user?.user_id, singleMember?.type).then((res) => {
+      if (res.message === 'failed') {
+        toast({
+          title: 'Error',
+          description: 'Failed to complete transaction',
+          position: 'top-right',
+          duration: 5000,
+          status: 'error',
+        });
+      }
+
+      if (res.message === 'success') {
+        toast({
+          title: 'Success',
+          description: 'Transaction completed',
+          position: 'top-right',
+          duration: 5000,
+          status: 'success',
+        });
+      }
+    });
+  };
+  const onClose = (data: UserCancelledResponseProps) => {
+    //Implement what should happen when the modal is closed here
+    console.log('data', data);
+    toast({
+      title: 'Transaction failed',
+      description: 'Payment cancelled by user',
+      position: 'top-right',
+      duration: 5000,
+      status: 'error',
+    });
+  };
   const config: MonnifyProps = {
     amount: singleMember?.fee!,
     currency: 'NGN',
     reference: `${new String(new Date().getTime())}`,
     customerName: user?.first_name + ' ' + user?.last_name,
     customerEmail: user?.email,
-    apiKey: 'MK_TEST_APTC98LF8Y',
+    apiKey: process.env.MONNIFY!,
     contractCode: '7717054880',
     paymentDescription: 'Membership registration',
     metadata: {
       name: user?.first_name + ' ' + user?.last_name,
     },
-    isTestMode: true,
+    isTestMode: false,
     customerPhoneNumber: user?.phoneNumber!,
   };
 
-  const componentProps = {
-    options: config,
-    text: 'Register',
-    className: 'btn',
-    onLoadStart: () => {
-      console.log('loading has started');
-    },
-    onLoadComplete: () => {
-      console.log('SDK is UP');
-    },
-
-    onComplete: function (res: CompleteResponesProps) {
-      //Implement what happens when the transaction is completed.
-
-      onSub(user?.user_id, singleMember?.type! as any)
-        .then(({ message }) => {
-          if (message === 'failed') {
-            toast({
-              title: 'Error',
-              description: 'Failed to complete registration.',
-              status: 'error',
-              duration: 5000,
-              position: 'top-right',
-            });
-          }
-
-          if (message === 'success') {
-            toast({
-              title: 'Welcome to Ijele SC',
-              description: 'You have successfully registered as a member.',
-              status: 'error',
-              duration: 5000,
-              position: 'top-right',
-            });
-          }
-        })
-        .catch((err) => {
-          console.log(err);
-
-          toast({
-            title: 'Error',
-            description: 'Failed to complete registration.',
-            status: 'error',
-            duration: 5000,
-            position: 'top-right',
-          });
-        });
-
-      console.log('response', res);
-    },
-    onClose: function (data: UserCancelledResponseProps) {
+  const initializePayment = usePayWithMonnifyPayment(config);
+  const onPay = () => {
+    if (!user?.id) {
+      router.push('/sign-in');
       toast({
-        title: 'Oops!',
-        description: 'You canceled the transaction',
+        title: 'Sign in',
+        description: 'Please in to continue',
         status: 'info',
         position: 'top-right',
+        duration: 5000,
       });
-      console.log('data', data);
-    },
+      return;
+    }
+    initializePayment(onLoadStart, onLoadComplete, onComplete, onClose);
   };
-
   return (
     <Flex
       py={{ base: 120, md: 150 }}
@@ -248,7 +246,7 @@ export const SingleMember = ({ user }: { user: MemberType }) => {
             >
               Go back
             </Button>
-            {/* <Button
+            <Button
               onClick={onPay}
               _hover={{
                 bg: colors.lightBlue,
@@ -258,38 +256,8 @@ export const SingleMember = ({ user }: { user: MemberType }) => {
               color={'white'}
               width={'100%'}
             >
-              Test
-            </Button> */}
-            {/* <MonnifyPaymentButton {...componentProps} /> */}
-            <PayWIthMonnifyPayment {...componentProps}>
-              {({ initializePayment }: { initializePayment: any }) => (
-                <Button
-                  onClick={() => {
-                    if (!user?.id) {
-                      router.push('/sign-in');
-                      toast({
-                        title: 'Sign in',
-                        description: 'Please in to continue',
-                        status: 'info',
-                        position: 'top-right',
-                        duration: 5000,
-                      });
-                      return;
-                    }
-                    initializePayment();
-                  }}
-                  _hover={{
-                    bg: colors.lightBlue,
-                    transition: { duration: 0.3, ease: 'easeIn' },
-                  }}
-                  bg={colors.darkBlue}
-                  color={'white'}
-                  width={'100%'}
-                >
-                  Register
-                </Button>
-              )}
-            </PayWIthMonnifyPayment>
+              Pay
+            </Button>
           </Flex>
         </Box>
       </SimpleGrid>

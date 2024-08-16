@@ -7,14 +7,13 @@ import {
   CardFooter,
   Flex,
   SimpleGrid,
-  useColorModeValue,
 } from '@chakra-ui/react';
 import { MemberType } from '@/types';
 import { CustomHeading, CustomText } from '@/components/ui/typography';
-import { format, parseISO } from 'date-fns';
 import { colors } from '@/constant';
 import { CustomButton } from '@/components/form/CustomButton';
 import { useRouter } from 'next/navigation';
+import { trimText } from '@/lib/helper';
 
 type Props = {
   user: MemberType;
@@ -89,9 +88,10 @@ export const ProfileCard = ({ user }: Props): JSX.Element => {
               <Flex gap={3}>
                 <CustomText text={'Email:'} textColor="black" />
                 <CustomText
-                  text={user?.email}
+                  text={trimText(user?.email)}
                   textColor="black"
                   fontWeight={'bold'}
+                  flexWrap={'wrap'}
                 />
               </Flex>
               <Flex gap={3}>
@@ -137,16 +137,17 @@ export const ProfileCard = ({ user }: Props): JSX.Element => {
         <CardFooter>
           <Flex gap={3} justifyContent={'center'} width="100%">
             <CustomHeading
-              text={'Member'}
-              textColor="black"
-              fontWeight={'bold'}
-            />
-            <CustomHeading
               text={user?.type!}
               textColor="black"
               fontWeight={'bold'}
               textTransform={'capitalize'}
             />
+            <CustomHeading
+              text={'Member'}
+              textColor="black"
+              fontWeight={'bold'}
+            />
+
             {user.type !== 'regular' && (
               <Avatar
                 src={url}

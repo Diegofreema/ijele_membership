@@ -1,4 +1,3 @@
-import { Wrapper } from '@/components/Wrapper';
 import { Benefits } from '@/components/home/Benifts';
 import { Landing } from '@/components/home/Landing';
 import { Membership } from '@/components/home/Membership';

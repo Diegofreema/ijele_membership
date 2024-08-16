@@ -1,8 +1,6 @@
 import { getProfile } from '@/actions/auth.action';
 import { SingleMember } from '@/components/member/SingleMember';
-import { NextPage } from 'next';
 import { cookies } from 'next/headers';
-import { redirect } from 'next/navigation';
 
 interface Props {}
 

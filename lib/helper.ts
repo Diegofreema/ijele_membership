@@ -41,3 +41,8 @@ export function generateRandomString() {
 
   return result;
 }
+
+export const trimText = (text: string) => {
+  if (text.length > 15) return text.substring(0, 15) + '...';
+  return text;
+};
