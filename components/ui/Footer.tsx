@@ -85,16 +85,17 @@ export const Footer = ({}: Props) => {
   return (
     <DarkContainer height={{ base: '100vh', md: '300px' }}>
       <SimpleGrid
-        columns={{ base: 2, md: 5 }}
+        columns={{ base: 1, md: 5 }}
         gap={5}
         width={{ base: '90%', md: '70%' }}
         mx={'auto'}
+        mt={{ base: 50, md: 0 }}
       >
         {links.map((link) => (
           <Box display={'flex'} flexDir={'column'} gap={5} key={link.label}>
             <Text
               textColor={'white'}
-              fontSize={{ base: 15, md: 20 }}
+              fontSize={{ base: 20, md: 25 }}
               fontWeight={'bold'}
               fontFamily={'var(--font-rubik)'}
             >
@@ -116,7 +117,7 @@ export const Footer = ({}: Props) => {
                     viewport={{ once: true }}
                     key={subLink.label}
                     textColor={'white'}
-                    fontSize={{ base: 10, md: 15 }}
+                    fontSize={{ base: 15, md: 18 }}
                     fontWeight={'400'}
                     fontFamily={'var(--font-rubik)'}
                   >
@@ -149,14 +150,11 @@ const socialLinks = [
 ];
 
 const FooterLinks = () => {
-  const bg = useColorModeValue('white', 'white');
-  const color = useColorModeValue('white', 'white');
-
   return (
     <Flex
       gap={5}
       mt={5}
-      justifyContent={'flex-start'}
+      justifyContent={{ base: 'center', md: 'flex-start' }}
       pb={{ base: 20, md: 50 }}
       width={{ base: '90%', md: '70%' }}
       mx="auto"

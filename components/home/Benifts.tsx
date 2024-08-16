@@ -29,7 +29,7 @@ export const Benefits = ({}: Props) => {
         <SimpleGrid
           columns={{ base: 1, md: 2 }}
           gap={{ base: 5, md: 10 }}
-          pt={{ base: 50, md: 100 }}
+          py={{ base: 50, md: 100 }}
         >
           <CustomHeading text={'Benefits'} textColor="black" />
           <Right />

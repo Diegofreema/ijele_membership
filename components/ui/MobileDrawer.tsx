@@ -33,7 +33,7 @@ export function MobileDrawer({ isOpen, onClose, onLogOut, userId }: Props) {
   console.log(userId);
 
   return (
-    <Drawer isOpen={isOpen} placement="right" onClose={onClose}>
+    <Drawer isOpen={isOpen} placement="right" onClose={onClose} size={'sm'}>
       <DrawerOverlay />
       <DrawerContent bg={bg} hideFrom={'md'}>
         <DrawerCloseButton color={color} />

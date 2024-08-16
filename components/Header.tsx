@@ -28,6 +28,10 @@ interface Props {
 }
 export const links = [
   {
+    href: 'https://www.ijelesportsclub.ng',
+    label: 'Ijele SC',
+  },
+  {
     href: '/profile',
     label: 'Profile',
   },
