@@ -119,6 +119,7 @@ export const Header = ({ id: userId }: Props) => {
           onLogOut={onLogOut}
           isOpen={isOpen}
           onClose={onClose}
+          buttonText={buttonText}
         />
         <IconButton
           hideFrom="md"

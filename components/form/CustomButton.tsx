@@ -10,6 +10,7 @@ interface Props extends ButtonProps {
 export const CustomButton = ({
   bg = colors.darkBlue,
   text,
+  color = 'white',
   ...props
 }: Props) => {
   return (
@@ -18,7 +19,7 @@ export const CustomButton = ({
       bg={bg}
       _hover={{ bg: bg }}
       borderRadius={20}
-      color={'white'}
+      color={color}
     >
       {text}
     </Button>

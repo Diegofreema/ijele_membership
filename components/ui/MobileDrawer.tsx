@@ -23,9 +23,16 @@ type Props = {
   onClose: () => void;
   onLogOut: () => void;
   userId: string | undefined;
+  buttonText: string;
 };
 
-export function MobileDrawer({ isOpen, onClose, onLogOut, userId }: Props) {
+export function MobileDrawer({
+  isOpen,
+  onClose,
+  onLogOut,
+  userId,
+  buttonText,
+}: Props) {
   const color = useColorModeValue('white', '#fff');
   const bg = useColorModeValue(colors.darkBlue, '#181818');
   const { colorMode, toggleColorMode } = useColorMode();
@@ -60,10 +67,13 @@ export function MobileDrawer({ isOpen, onClose, onLogOut, userId }: Props) {
             })}
             {userId ? (
               <CustomButton
-                textColor="black"
                 bg="transparent"
+                color="white"
                 text="Log out"
                 onClick={onLogOut}
+                width="fit-content"
+                px={0}
+                borderRadius={10}
               />
             ) : (
               <Link href="/sign-in">
@@ -77,9 +87,20 @@ export function MobileDrawer({ isOpen, onClose, onLogOut, userId }: Props) {
                 </Text>
               </Link>
             )}
+            <Link href="/membership">
+              <Button
+                bg={colors.brown}
+                color={'white'}
+                width={'fit-content'}
+                px={10}
+                borderRadius={10}
+              >
+                {buttonText}
+              </Button>
+            </Link>
           </Flex>
         </DrawerBody>
-
+        {/* 
         <DrawerFooter>
           <Button
             borderRadius={50}
@@ -90,7 +111,7 @@ export function MobileDrawer({ isOpen, onClose, onLogOut, userId }: Props) {
           >
             {colorMode === 'light' ? <Sun color={bg} /> : <Moon color={bg} />}
           </Button>
-        </DrawerFooter>
+        </DrawerFooter> */}
       </DrawerContent>
     </Drawer>
   );
