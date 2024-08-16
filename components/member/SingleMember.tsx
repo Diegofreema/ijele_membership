@@ -117,30 +117,42 @@ export const SingleMember = ({ user }: { user: MemberType }) => {
 
   const onComplete = (res: CompleteResponesProps) => {
     //Implement what happens when the transaction is completed.
-    console.log('response', res);
+    console.log('response', { error: res.message });
+    if (res.status === 'FAILED') return;
     // @ts-ignore
-    onSub(user?.user_id, singleMember?.type).then((res) => {
-      if (res.message === 'failed') {
+    onSub(user?.user_id, singleMember?.type)
+      .then((res) => {
+        if (res.message === 'failed') {
+          toast({
+            title: 'Error',
+            description: 'Failed to complete transaction',
+            position: 'top-right',
+            duration: 5000,
+            status: 'error',
+          });
+        }
+
+        if (res.message === 'success') {
+          toast({
+            title: 'Success',
+            description: 'Transaction completed',
+            position: 'top-right',
+            duration: 5000,
+            status: 'success',
+          });
+        }
+      })
+      .catch((e) => {
+        console.log(e);
+
         toast({
           title: 'Error',
-          description: 'Failed to complete transaction',
-          position: 'top-right',
-          duration: 5000,
+          description: 'Error occurred',
           status: 'error',
         });
-      }
-
-      if (res.message === 'success') {
-        toast({
-          title: 'Success',
-          description: 'Transaction completed',
-          position: 'top-right',
-          duration: 5000,
-          status: 'success',
-        });
-      }
-    });
+      });
   };
+
   const onClose = (data: UserCancelledResponseProps) => {
     //Implement what should happen when the modal is closed here
     console.log('data', data);
@@ -158,8 +170,8 @@ export const SingleMember = ({ user }: { user: MemberType }) => {
     reference: `${new String(new Date().getTime())}`,
     customerName: user?.first_name + ' ' + user?.last_name,
     customerEmail: user?.email,
-    apiKey: process.env.MONNIFY!,
-    contractCode: '7717054880',
+    apiKey: process.env.NEXT_PUBLIC_MONNIFY!,
+    contractCode: process.env.NEXT_PUBLIC_CONTRACT!,
     paymentDescription: 'Membership registration',
     metadata: {
       name: user?.first_name + ' ' + user?.last_name,
