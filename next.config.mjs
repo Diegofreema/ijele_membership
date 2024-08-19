@@ -2,8 +2,16 @@
 const nextConfig = {
   webpack: (config, { isServer }) => {
     if (!isServer) {
-      config.node = {
-        fs: 'empty',
+      config.resolve = {
+        ...config.resolve,
+        fallback: {
+          net: false,
+          dns: false,
+          tls: false,
+          fs: false,
+          request: false,
+          child_process: false,
+        },
       };
     }
     return config;
