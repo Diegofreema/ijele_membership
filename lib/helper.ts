@@ -1,7 +1,5 @@
 import * as bcrypt from 'bcrypt-ts';
 import nodemailer from 'nodemailer';
-import { render } from '@react-email/components';
-import { VerifyEmail } from '../emails/Verify';
 
 export const hashPasswordBcrypt = async (
   password: string
