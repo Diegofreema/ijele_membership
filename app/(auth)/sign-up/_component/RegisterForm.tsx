@@ -146,7 +146,7 @@ export const RegisterForm = ({}: Props): JSX.Element => {
     if (!file) return;
     setUploading(true);
     try {
-      const filePath = `/profile/${file?.name}`;
+      const filePath = `/profile/${file?.name}/${Math.random() * 10000}`;
       const { data, error } = await supabase.storage
         .from('files')
         .upload(filePath, file);
@@ -357,7 +357,7 @@ export const RegisterForm = ({}: Props): JSX.Element => {
         </SimpleGrid>
 
         <ReCAPTCHA
-          sitekey={process.env.NEXT_PUBLIC_CLI!}
+          sitekey={process.env.NEXT_PUBLIC_CLI_KEY!}
           onChange={setCapCha}
           className="mx-auto mt-4"
         />

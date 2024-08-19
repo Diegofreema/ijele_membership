@@ -54,7 +54,7 @@ export const Header = ({ id: userId }: Props) => {
   };
 
   const buttonText =
-    isMember === null ? ' Join as a Member' : 'Upgrade Membership';
+    isMember.current === null ? ' Join as a Member' : 'Upgrade Membership';
   return (
     <Box
       as={motion.div}

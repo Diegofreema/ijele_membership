@@ -9,6 +9,8 @@ type Props = {
 export const useMember = ({ id }: Props) => {
   const isMember = useRef<TypeEnums | null>(null);
   const supabase = createClient();
+  console.log(id);
+
   useEffect(() => {
     if (!id) {
       isMember.current = null;

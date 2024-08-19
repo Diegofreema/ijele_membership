@@ -1,9 +1,12 @@
 'use server';
+import { VerifyEmail } from './../emails/Verify';
 import { addYears, format } from 'date-fns';
-import VerifyEmail from '@/emails/Verify';
+import { render } from '@react-email/components';
+
 import {
   generateRandomString,
   hashPasswordBcrypt,
+  transporter,
   verifyPasswordBcrypt,
 } from '@/lib/helper';
 import { RegisterMemberType, TypeEnums, UpdateType } from '@/types';
@@ -13,8 +16,29 @@ import { redirect } from 'next/navigation';
 import { Resend } from 'resend';
 import { revalidatePath } from 'next/cache';
 import ResetPassword from '@/emails/ResetPassword';
+import nodemailer from 'nodemailer';
 const resend = new Resend(process.env.RESEND_KEY);
 const api = process.env.BASE_URL;
+
+export const testEmail = async () => {
+  const emailHtml = render(
+    VerifyEmail({
+      fullName: `Diego eke`,
+      verificationLink: `${2}/confirm-email?id=${1}`,
+    })
+  );
+
+  const options = {
+    from: `Support <${process.env.SENDER_EMAIL}>`,
+    to: 'diegofreeman78@gmail.com',
+    subject: 'Verify your email',
+    html: emailHtml,
+  };
+
+  const res = await transporter.sendMail(options);
+  console.log('calling');
+  console.log(res);
+};
 export const login = async ({
   email,
   password,
@@ -83,20 +107,40 @@ export const register = async (values: RegisterMemberType) => {
     console.log('Error:', error.message);
     return { error: error.message };
   }
-  const { error: emailError } = await resend.emails.send({
-    from: `Support <${process.env.SENDER_EMAIL}>`,
-    to: [data?.email],
-    subject: 'Verify your email',
-    react: VerifyEmail({
-      userImage: data?.img_url as string,
+
+  const emailHtml = render(
+    VerifyEmail({
       fullName: `${data?.first_name} ${data?.last_name}`,
       verificationLink: `${api}/confirm-email?id=${data?.user_id}`,
-    }),
-  });
-  if (emailError) {
-    console.log('Error:', emailError);
+    })
+  );
+
+  const options = {
+    from: `Ijele <${process.env.SENDER_EMAIL}>`,
+    to: data?.email,
+    subject: 'Verify your email',
+    html: emailHtml,
+  };
+
+  const { accepted } = await transporter.sendMail(options);
+  // const { error: emailError } = await resend.emails.send({
+  //   from: `Support <${process.env.SENDER_EMAIL}>`,
+  //   to: [data?.email],
+  //   subject: 'Verify your email',
+  //   react: VerifyEmail({
+  //
+  //     fullName: `${data?.first_name} ${data?.last_name}`,
+  //     verificationLink: `${api}/confirm-email?id=${data?.user_id}`,
+  //   }),
+  // });
+  // if (emailError) {
+  //   console.log('Error:', emailError);
+  // }
+  // !emailError && redirect('/sign-in');
+
+  if (accepted) {
+    redirect('/sign-in');
   }
-  !emailError && redirect('/sign-in');
 };
 export const update = async (values: UpdateType, userId: string) => {
   const supabase = createClient();
@@ -141,23 +185,31 @@ export const forgotPasswordFn = async (email: string) => {
     .eq('email', email);
 
   if (error) {
-    throw new Error('Failed to get send email');
+    return { message: 'Failed to get send email' };
   }
   if (data.length === 0) {
     return { message: 'email not found' };
   }
 
   if (data.length > 0) {
-    const { error: emailError } = await resend.emails.send({
-      from: `Support <${process.env.SENDER_EMAIL}>`,
-      to: [email],
-      subject: 'Reset your password',
-      react: ResetPassword({
+    const emailHtml = render(
+      ResetPassword({
         resetLink: `${api}/reset-password?id=${data[0]?.user_id}`,
-      }),
-    });
-    return { message: 'email sent' };
+      })
+    );
+
+    const options = {
+      from: `Ijele <${process.env.SENDER_EMAIL}>`,
+      to: email,
+      subject: 'Reset your password',
+      html: emailHtml,
+    };
+
+    const { accepted } = await transporter.sendMail(options);
+    if (accepted) return { message: 'email sent' };
   }
+
+  return { message: 'Failed to get send email' };
 };
 
 export const getAllMembers = async () => {

@@ -19,12 +19,11 @@ import * as React from 'react';
 
 interface VerificationLink {
   fullName?: string;
-  userImage?: string;
+
   verificationLink?: string;
 }
 
 export const VerifyEmail = ({
-  userImage,
   fullName,
   verificationLink,
 }: VerificationLink) => {
@@ -43,7 +42,7 @@ export const VerifyEmail = ({
 
             <Section className="text-center mt-[32px] mb-[32px]">
               <Button className="bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3">
-                Welcome to the family {fullName}
+                Welcome to the Ijele SC {fullName}
               </Button>
             </Section>
             <Section className="flex justify-center">

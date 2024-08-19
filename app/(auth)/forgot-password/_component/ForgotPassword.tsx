@@ -53,6 +53,15 @@ export const ForgotPassword = ({}: Props): JSX.Element => {
         reset();
         router.push('/sign-in');
       }
+      if (res?.message === 'Failed to get send email') {
+        toast({
+          title: 'Email not sent',
+          description: 'Please try again later',
+          status: 'error',
+          position: 'top-right',
+          duration: 5000,
+        });
+      }
     } catch (error) {
       toast({
         title: 'Email not sent',
