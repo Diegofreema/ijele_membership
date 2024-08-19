@@ -39,7 +39,7 @@ export const VerifyEmail = ({
             <Heading className="text-white text-center">
               This is from IjeleSC Membership website, Please verify your email.
             </Heading>
-            <Section className="mb-[50px] flex justify-center min-w-[50%] mx-auto">
+            <Section className="mb-[50px] !flex !justify-center min-w-[100%] mx-auto">
               <Img
                 src={`https://www.ijelesportsmembership.ng/logo.png`}
                 width="70"
