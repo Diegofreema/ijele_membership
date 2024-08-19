@@ -165,7 +165,7 @@ export const LoginForm = ({}: Props): JSX.Element => {
           />
 
           <ReCAPTCHA
-            sitekey={process.env.NEXT_PUBLIC_CLI_KEY!}
+            sitekey={process.env.NEXT_PUBLIC_CLI!}
             onChange={setCapCha}
             className="mx-auto"
           />
