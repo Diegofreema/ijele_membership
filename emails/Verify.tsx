@@ -39,7 +39,15 @@ export const VerifyEmail = ({
             <Heading className="text-white text-center">
               This is from IjeleSC Membership website, Please verify your email.
             </Heading>
-
+            <Section className="mb-[32px] flex justify-center">
+              <Img
+                src={`https://www.ijelesportsmembership.ng/logo.png`}
+                width="40"
+                height="37"
+                alt="Vercel"
+                className="my-0 mx-auto"
+              />
+            </Section>
             <Section className="text-center mt-[32px] mb-[32px]">
               <Button className="bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3">
                 Welcome to the Ijele SC {fullName}
