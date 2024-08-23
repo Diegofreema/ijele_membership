@@ -1,4 +1,6 @@
 import * as bcrypt from 'bcrypt-ts';
+import nodemailer from 'nodemailer';
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
 
 export const hashPasswordBcrypt = async (
   password: string

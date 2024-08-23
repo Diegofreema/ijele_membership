@@ -16,10 +16,19 @@ import { Resend } from 'resend';
 import { revalidatePath } from 'next/cache';
 import ResetPassword from '@/emails/ResetPassword';
 import nodemailer from 'nodemailer';
-import { transporter } from '@/app/api/nodemailer/route';
+import SMTPTransport from 'nodemailer/lib/smtp-transport';
 const resend = new Resend(process.env.RESEND_KEY);
 const api = process.env.BASE_URL;
 
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  port: 465,
+  secure: true,
+  auth: {
+    user: process.env.USER,
+    pass: process.env.PASS,
+  },
+} as SMTPTransport.Options);
 export const testEmail = async () => {
   const emailHtml = render(
     VerifyEmail({
