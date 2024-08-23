@@ -106,9 +106,21 @@ export const RegisterForm = ({}: Props): JSX.Element => {
         phoneNumber: data.phoneNumber,
       });
 
-      if (res?.error) {
+      if (res?.error === 'Failed to create profile') {
         console.log(res?.error);
 
+        toast({
+          title: 'Error',
+          description: 'Failed to create profile',
+          status: 'error',
+          isClosable: true,
+          duration: 9000,
+          position: 'top-right',
+        });
+        return;
+      }
+
+      if (res?.error) {
         toast({
           title: 'Email already exists',
           description: 'Please use a different email address',

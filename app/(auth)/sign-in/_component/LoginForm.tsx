@@ -16,6 +16,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import axios from 'axios';
 import { useState } from 'react';
 import ReCAPTCHA from 'react-google-recaptcha';
+import { log } from 'console';
 type Props = {};
 
 export const LoginForm = ({}: Props): JSX.Element => {
@@ -119,19 +120,32 @@ export const LoginForm = ({}: Props): JSX.Element => {
         });
       }
 
-      toast({
-        title: 'Welcome',
-        description: 'Login successfully',
-        status: 'success',
-        position: 'top-right',
-      });
+      if (res.success) {
+        toast({
+          title: 'Welcome',
+          description: 'Login successfully',
+          status: 'success',
+          position: 'top-right',
+        });
+        router.replace('/profile');
+      }
+      if (res.error === 'failed') {
+        toast({
+          title: 'Error',
+          description: 'Failed to login please try again',
+          status: 'error',
+          position: 'top-right',
+        });
+      }
 
       if (prev) {
         router.replace(`${prev}?membership=${membership}`);
       } else {
         router.replace('/profile');
       }
-    } catch (error) {}
+    } catch (error) {
+      console.log(error);
+    }
   };
   return (
     <Flex mt={{ base: 150, md: 100 }}>

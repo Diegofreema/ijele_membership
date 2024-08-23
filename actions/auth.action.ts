@@ -6,7 +6,6 @@ import { render } from '@react-email/components';
 import {
   generateRandomString,
   hashPasswordBcrypt,
-  transporter,
   verifyPasswordBcrypt,
 } from '@/lib/helper';
 import { RegisterMemberType, TypeEnums, UpdateType } from '@/types';
@@ -17,6 +16,7 @@ import { Resend } from 'resend';
 import { revalidatePath } from 'next/cache';
 import ResetPassword from '@/emails/ResetPassword';
 import nodemailer from 'nodemailer';
+import { transporter } from '@/app/api/nodemailer/route';
 const resend = new Resend(process.env.RESEND_KEY);
 const api = process.env.BASE_URL;
 
@@ -47,8 +47,7 @@ export const login = async ({
   password: string;
 }) => {
   const supabase = createClient();
-  //   const hashPassword = await verifyPasswordBcrypt(password);
-  //   if (!hashPassword) return { message: 'failed to create profile' };
+
   const { error, data } = await supabase
     .from('users')
     .select()
@@ -60,8 +59,11 @@ export const login = async ({
     return { error: error.message };
   }
 
-  const hashPassword = await verifyPasswordBcrypt(data?.password, password);
+  if (!data) {
+    return { error: 'User not found' };
+  }
 
+  const hashPassword = await verifyPasswordBcrypt(data.password, password);
   if (!hashPassword) {
     return { error: 'Invalid credentials' };
   }
@@ -69,7 +71,16 @@ export const login = async ({
   if (!data.verified) {
     return { error: 'not verified' };
   }
+
+  console.log({ user_id: data.user_id });
   cookies().set('id', data.user_id, { secure: true });
+  const id = cookies().get('id')?.value;
+  if (id) {
+    console.log(id);
+
+    return { success: true };
+  }
+  return { error: 'failed' };
 };
 
 export const register = async (values: RegisterMemberType) => {
@@ -172,7 +183,7 @@ export const getProfile = async (id: string) => {
   if (error) {
     console.log(error);
 
-    // throw new Error('Failed to get profile data');
+    throw new Error('Failed to get profile data');
   }
   return data;
 };

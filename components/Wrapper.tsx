@@ -4,12 +4,13 @@ import { Box, useColorModeValue } from '@chakra-ui/react';
 
 interface Props {
   children: React.ReactNode;
+  height?: string;
 }
 
-export const Wrapper = ({ children }: Props) => {
+export const Wrapper = ({ children, height = '100vh' }: Props) => {
   const bg = useColorModeValue(colors.brown, colors.lightDark);
   return (
-    <Box minHeight={'100vh'} width={{ base: '90%', md: '70%' }} mx="auto">
+    <Box minHeight={height} width={{ base: '90%', md: '70%' }} mx="auto">
       {children}
     </Box>
   );

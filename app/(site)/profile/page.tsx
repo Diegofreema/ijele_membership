@@ -8,9 +8,12 @@ type Props = {};
 
 const page = async (props: Props) => {
   const id = cookies().get('id')?.value;
+  console.log({ id });
 
   if (!id) redirect('/sign-in');
   const user = await getProfile(id);
+  console.log({ user, id });
+
   if (!user) redirect('/sign-in');
 
   return (

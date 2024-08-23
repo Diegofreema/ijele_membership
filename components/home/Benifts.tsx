@@ -24,8 +24,8 @@ const texts = [
 
 export const Benefits = ({}: Props) => {
   return (
-    <DarkContainer>
-      <Wrapper>
+    <DarkContainer height={'fit-content'}>
+      <Wrapper height="fit-content">
         <SimpleGrid
           columns={{ base: 1, md: 2 }}
           gap={{ base: 5, md: 10 }}
