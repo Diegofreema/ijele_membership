@@ -28,26 +28,11 @@ const transporter = nodemailer.createTransport({
     user: process.env.USER,
     pass: process.env.PASS,
   },
+  tls: {
+    rejectUnauthorized: false,
+  },
 } as SMTPTransport.Options);
-export const testEmail = async () => {
-  const emailHtml = render(
-    VerifyEmail({
-      fullName: `Diego eke`,
-      verificationLink: `${2}/confirm-email?id=${1}`,
-    })
-  );
 
-  const options = {
-    from: `Support <${process.env.SENDER_EMAIL}>`,
-    to: 'diegofreeman78@gmail.com',
-    subject: 'Verify your email',
-    html: emailHtml,
-  };
-
-  const res = await transporter.sendMail(options);
-  console.log('calling');
-  console.log(res);
-};
 export const login = async ({
   email,
   password,
@@ -127,39 +112,52 @@ export const register = async (values: RegisterMemberType) => {
     console.log('Error:', error.message);
     return { error: error.message };
   }
+  console.log('render');
 
   const emailHtml = render(
     VerifyEmail({
       fullName: `${data?.first_name} ${data?.last_name}`,
       verificationLink: `${api}/confirm-email?id=${data?.user_id}`,
+      userImage: data.img_url!,
     })
   );
 
-  const options = {
-    from: `Ijele <${process.env.SENDER_EMAIL}>`,
-    to: data?.email,
-    subject: 'Verify your email',
-    html: emailHtml,
-  };
+  try {
+    const options = {
+      from: `Diego from Ijele SC <${process.env.SENDER_EMAIL}>`,
+      to: data?.email,
+      subject: 'Verify your email',
+      html: emailHtml,
+    };
+    console.log('before mail');
 
-  const { accepted } = await transporter.sendMail(options);
-  // const { error: emailError } = await resend.emails.send({
-  //   from: `Support <${process.env.SENDER_EMAIL}>`,
-  //   to: [data?.email],
-  //   subject: 'Verify your email',
-  //   react: VerifyEmail({
-  //
-  //     fullName: `${data?.first_name} ${data?.last_name}`,
-  //     verificationLink: `${api}/confirm-email?id=${data?.user_id}`,
-  //   }),
-  // });
-  // if (emailError) {
-  //   console.log('Error:', emailError);
-  // }
-  // !emailError && redirect('/sign-in');
+    const { accepted, response, rejected } = await transporter.sendMail(
+      options
+    );
+    console.log('after mail');
+    // const { error: emailError } = await resend.emails.send({
+    //   from: `Support <${process.env.SENDER_EMAIL}>`,
+    //   to: [data?.email],
+    //   subject: 'Verify your email',
+    //   react: VerifyEmail({
+    //
+    //     fullName: `${data?.first_name} ${data?.last_name}`,
+    //     verificationLink: `${api}/confirm-email?id=${data?.user_id}`,
+    //   }),
+    // });
+    // if (emailError) {
+    //   console.log('Error:', emailError);
+    // }
+    // !emailError && redirect('/sign-in');
+    console.log({ response, rejected });
 
-  if (accepted) {
-    redirect('/sign-in');
+    if (accepted) {
+      redirect('/sign-in');
+    }
+  } catch (error) {
+    console.log(error, 'email error');
+    await supabase.from('users').delete().eq('user_id', data.user_id);
+    return { error: 'Failed to create profile' };
   }
 };
 export const update = async (values: UpdateType, userId: string) => {

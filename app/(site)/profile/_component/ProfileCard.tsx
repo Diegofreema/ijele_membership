@@ -57,12 +57,14 @@ export const ProfileCard = ({ user }: Props): JSX.Element => {
       <Card bg={'white'}>
         <CardBody>
           <SimpleGrid columns={{ base: 1, md: 2 }} gap={{ base: 5, md: 10 }}>
-            <Avatar
-              src={user.img_url as string}
-              width={200}
-              height={200}
-              objectFit={'cover'}
-            />
+            {user.img_url && (
+              <Avatar
+                src={user.img_url as string}
+                width={200}
+                height={200}
+                objectFit={'cover'}
+              />
+            )}
             <Box display={'flex'} flexDirection={'column'} gap={3}>
               <Flex gap={3}>
                 <CustomText

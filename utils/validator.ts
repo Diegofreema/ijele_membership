@@ -60,7 +60,7 @@ export const registerSchema = z
 
     salutation: z.string(),
     gender: z.string().min(1, { message: 'Please select your gender' }),
-    img_url: z.string().min(1, { message: 'Please select an image' }),
+    img_url: z.string().optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: 'Passwords do not match',

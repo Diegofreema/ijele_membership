@@ -21,11 +21,13 @@ interface VerificationLink {
   fullName?: string;
 
   verificationLink?: string;
+  userImage?: string;
 }
 
 export const VerifyEmail = ({
   fullName,
   verificationLink,
+  userImage,
 }: VerificationLink) => {
   const previewText = `${fullName} good to have you with us`;
 
@@ -39,14 +41,45 @@ export const VerifyEmail = ({
             <Heading className="text-white text-center">
               This is from IjeleSC Membership website, Please verify your email.
             </Heading>
-            <Section className="mb-[50px] !flex !justify-center min-w-[100%] mx-auto">
+            <Section>
+              <Row>
+                <Column align="right">
+                  <Img
+                    src={`https://www.ijelesportsmembership.ng/logo.png`}
+                    width="70"
+                    height="70"
+                    alt="Ijele"
+                  />
+                </Column>
+                <Column align="center">
+                  <Img
+                    src={`https://www.ijelesportsmembership.ng/arrow.png`}
+                    width="12"
+                    height="9"
+                    alt="invited you to"
+                  />
+                </Column>
+                <Column align="left">
+                  <Img
+                    className="rounded-full"
+                    src={
+                      userImage ||
+                      'https://www.ijelesportsmembership.ng/boy.png'
+                    }
+                    width="70"
+                    height="70"
+                  />
+                </Column>
+              </Row>
+            </Section>
+            <Container className="mb-[50px] !flex !justify-center min-w-[100%] mx-auto">
               <Img
                 src={`https://www.ijelesportsmembership.ng/logo.png`}
                 width="70"
                 height="70"
                 alt="Vercel"
               />
-            </Section>
+            </Container>
             <Section className="text-center mt-[32px] mb-[32px]">
               <Button className="bg-[#000000] rounded text-white text-[12px] font-semibold no-underline text-center px-5 py-3">
                 Welcome to the Ijele SC {fullName}
