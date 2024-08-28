@@ -28,9 +28,6 @@ const transporter = nodemailer.createTransport({
     user: process.env.USER,
     pass: process.env.PASS,
   },
-  tls: {
-    rejectUnauthorized: false,
-  },
 } as SMTPTransport.Options);
 
 export const login = async ({
@@ -152,7 +149,7 @@ export const register = async (values: RegisterMemberType) => {
     console.log({ response, rejected });
 
     if (accepted) {
-      redirect('/sign-in');
+      return { message: 'accepted' };
     }
   } catch (error) {
     console.log(error, 'email error');

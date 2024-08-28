@@ -28,6 +28,7 @@ import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import ReCAPTCHA from 'react-google-recaptcha';
 
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
 type Props = {};
 
 export const RegisterForm = ({}: Props): JSX.Element => {
@@ -38,6 +39,7 @@ export const RegisterForm = ({}: Props): JSX.Element => {
   const [uploading, setUploading] = useState(false);
   const [state, setState] = useState('password');
   const [state2, setState2] = useState('password');
+  const router = useRouter();
   const handleType = () => {
     if (state === 'password') {
       setState('text');
@@ -131,15 +133,18 @@ export const RegisterForm = ({}: Props): JSX.Element => {
         });
         return;
       }
-      toast({
-        title: 'Account has been created successfully',
-        description: 'Please check your email to verify your account',
-        status: 'success',
-        isClosable: true,
-        duration: 9000,
-        position: 'top-right',
-      });
-      reset();
+      if (res?.message === 'accepted') {
+        toast({
+          title: 'Account has been created successfully',
+          description: 'Please check your email to verify your account',
+          status: 'success',
+          isClosable: true,
+          duration: 9000,
+          position: 'top-right',
+        });
+        router.replace('/sign-in');
+        reset();
+      }
     } catch (error) {
       console.log(error);
       toast({
