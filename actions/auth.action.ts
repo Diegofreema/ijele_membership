@@ -186,8 +186,6 @@ export const getProfile = async (id: string) => {
     .single();
   if (error) {
     console.log(error);
-
-    throw new Error('Failed to get profile data');
   }
   return data;
 };
