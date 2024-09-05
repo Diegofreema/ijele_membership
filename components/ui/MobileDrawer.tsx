@@ -14,9 +14,10 @@ import {
 import { AuthButtons, links } from '../Header';
 import { Link } from 'next-view-transitions';
 import { Moon, Sun } from 'lucide-react';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { colors } from '@/constant';
 import { CustomButton } from '../form/CustomButton';
+import { MouseEventHandler } from 'react';
 
 type Props = {
   isOpen: boolean;
@@ -37,8 +38,12 @@ export function MobileDrawer({
   const bg = useColorModeValue(colors.darkBlue, '#181818');
   const { colorMode, toggleColorMode } = useColorMode();
   const pathname = usePathname();
+  const router = useRouter();
   console.log(userId);
-
+  const handleLogOut = () => {
+    onLogOut();
+    onClose;
+  };
   return (
     <Drawer isOpen={isOpen} placement="right" onClose={onClose} size={'sm'}>
       <DrawerOverlay />
@@ -54,8 +59,13 @@ export function MobileDrawer({
           >
             {links.map(({ href, label }) => {
               const isActive = pathname.includes(href);
+              const handleClose: MouseEventHandler<HTMLAnchorElement> = (e) => {
+                e.preventDefault();
+                router.push(href);
+                onClose();
+              };
               return (
-                <Link key={href} href={href} onClick={onClose}>
+                <Link key={href} href={href} onClick={handleClose}>
                   <Text
                     textColor={isActive ? colors.orange : color}
                     fontWeight={'bold'}
@@ -70,13 +80,20 @@ export function MobileDrawer({
                 bg="transparent"
                 color="white"
                 text="Log out"
-                onClick={onLogOut}
+                onClick={handleLogOut}
                 width="fit-content"
                 px={0}
                 borderRadius={10}
               />
             ) : (
-              <Link href="/sign-in">
+              <Link
+                href="/sign-in"
+                onClick={(e) => {
+                  e.preventDefault();
+                  router.push('/sign-in');
+                  onClose();
+                }}
+              >
                 <Text
                   className="group-hover:text-[#8ad5e7] transition duration-150 group-hover:-translate-y-1"
                   fontFamily={'var(--font-rubik)'}
@@ -87,7 +104,14 @@ export function MobileDrawer({
                 </Text>
               </Link>
             )}
-            <Link href="/membership">
+            <Link
+              href="/membership"
+              onClick={(e) => {
+                e.preventDefault();
+                router.push('/membership');
+                onClose();
+              }}
+            >
               <Button
                 bg={colors.brown}
                 color={'white'}
