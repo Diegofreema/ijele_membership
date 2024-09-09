@@ -145,6 +145,12 @@ export const LoginForm = ({}: Props): JSX.Element => {
       }
     } catch (error) {
       console.log(error);
+      toast({
+        title: 'Error',
+        description: 'Failed to login please try again',
+        status: 'error',
+        position: 'top-right',
+      });
     }
   };
   return (
