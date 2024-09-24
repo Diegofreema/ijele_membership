@@ -57,7 +57,7 @@ export const VerifyEmail = ({}: Props) => {
   }, [id, router, toast]);
 
   return (
-    <Flex minH={'100vh'} justifyContent={'center'} alignItems={'center'}>
+    <Flex minH={'100dvh'} justifyContent={'center'} alignItems={'center'}>
       <Spinner color="green" size="xl" />
     </Flex>
   );

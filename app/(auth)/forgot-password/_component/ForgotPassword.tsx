@@ -73,7 +73,7 @@ export const ForgotPassword = ({}: Props): JSX.Element => {
     }
   };
   return (
-    <Flex mt={{ base: 150, md: 50 }} minH={'100vh'}>
+    <Flex mt={{ base: 150, md: 50 }} minH={'100dvh'}>
       <Flex
         width={{ base: '90%', md: '70%', lg: '50%' }}
         mx="auto"

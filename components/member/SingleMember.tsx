@@ -198,7 +198,7 @@ export const SingleMember = ({ user }: { user: MemberType }) => {
   return (
     <Flex
       py={{ base: 120, md: 150 }}
-      minHeight={'100vh'}
+      minHeight={'100dvh'}
       alignItems={'center'}
       justifyContent={'center'}
     >

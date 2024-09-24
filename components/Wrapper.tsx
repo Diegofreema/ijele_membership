@@ -7,7 +7,7 @@ interface Props {
   height?: string;
 }
 
-export const Wrapper = ({ children, height = '100vh' }: Props) => {
+export const Wrapper = ({ children, height = '100dvh' }: Props) => {
   const bg = useColorModeValue(colors.brown, colors.lightDark);
   return (
     <Box minHeight={height} width={{ base: '90%', md: '70%' }} mx="auto">

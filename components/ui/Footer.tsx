@@ -83,7 +83,7 @@ const links = [
 export const Footer = ({}: Props) => {
   const color = useColorModeValue('white', colors.black);
   return (
-    <DarkContainer height={{ base: '100vh', md: '300px' }}>
+    <DarkContainer height={{ base: '100dvh', md: '300px' }}>
       <SimpleGrid
         columns={{ base: 1, md: 5 }}
         gap={5}

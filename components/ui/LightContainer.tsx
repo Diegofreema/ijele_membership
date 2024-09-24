@@ -25,7 +25,7 @@ interface Props {
     | undefined;
 }
 
-export const LightContainer = ({ children, height = '100vh' }: Props) => {
+export const LightContainer = ({ children, height = '100dvh' }: Props) => {
   const bg = useColorModeValue(colors.darkBlue, '#181818');
   return (
     <Box

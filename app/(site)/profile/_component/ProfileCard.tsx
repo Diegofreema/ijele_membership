@@ -49,7 +49,7 @@ export const ProfileCard = ({ user }: Props): JSX.Element => {
 
   return (
     <Flex
-      height={'100vh'}
+      height={'100dvh'}
       justifyContent={'center'}
       alignItems={'center'}
       flexDir={'column'}
