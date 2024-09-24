@@ -1,3 +1,4 @@
+'use client';
 import { Heading, HeadingProps, Text, TextProps } from '@chakra-ui/react';
 
 type Props = HeadingProps & {
