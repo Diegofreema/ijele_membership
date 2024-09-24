@@ -182,18 +182,19 @@ export const SingleMember = ({ user }: { user: MemberType }) => {
 
   const initializePayment = usePayWithMonnifyPayment(config);
   const onPay = () => {
-    if (!user?.id) {
-      router.push('/sign-in');
-      toast({
-        title: 'Sign in',
-        description: 'Please in to continue',
-        status: 'info',
-        position: 'top-right',
-        duration: 5000,
-      });
-      return;
-    }
-    initializePayment(onLoadStart, onLoadComplete, onComplete, onClose);
+    // if (!user?.id) {
+    //   router.push('/sign-in');
+    //   toast({
+    //     title: 'Sign in',
+    //     description: 'Please in to continue',
+    //     status: 'info',
+    //     position: 'top-right',
+    //     duration: 5000,
+    //   });
+    //   return;
+    // }
+    // initializePayment(onLoadStart, onLoadComplete, onComplete, onClose);
+    router.push('https://paylink.monnify.com/ijelescmembership');
   };
   return (
     <Flex
